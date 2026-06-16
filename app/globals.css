@@ -10,6 +10,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-poppins: var(--font-poppins);
+}
+@theme {
+  --color-editor-bg: #EFEAE2;
+  --color-editor-primary: #2A1F14;
+  --color-editor-accent: #8B6F4E;
+  --color-editor-surface: #C9B896;
+  --color-editor-border: #CEC9C5;
+
 }
 
 @media (prefers-color-scheme: dark) {
