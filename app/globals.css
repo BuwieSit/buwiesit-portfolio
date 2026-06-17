@@ -8,9 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --font-poppins: var(--font-poppins);
+  --font-times-new: var(--font-times-mt);
 }
 @theme {
   --color-editor-bg: #EFEAE2;
@@ -18,6 +17,9 @@
   --color-editor-accent: #8B6F4E;
   --color-editor-surface: #C9B896;
   --color-editor-border: #CEC9C5;
+
+  --text-title-size: 2rem;
+  --text-detail-size: 0.8rem;
 
 }
 
@@ -31,5 +33,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins)
 }
