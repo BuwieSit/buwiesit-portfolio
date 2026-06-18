@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+* {
+  scroll-behavior: smooth;
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -10,6 +13,7 @@
   --color-foreground: var(--foreground);
   --font-poppins: var(--font-poppins);
   --font-times-new: var(--font-times-mt);
+  --font-bebas: var(--font-bebas);
 }
 @theme {
   --color-editor-bg: #EFEAE2;
@@ -20,7 +24,7 @@
 
   --text-title-size: 2rem;
   --text-detail-size: 0.8rem;
-
+  --font-editor-title: var(--font-bebas);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,5 +37,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-poppins)
+  font-family: var(--font-poppins);
 }

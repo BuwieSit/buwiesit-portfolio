@@ -2,13 +2,14 @@ import Image from "next/image";
 import Carousel from "@/components/Carousel";
 import WebsiteCard from "@/components/WebsiteCard";
 import VideoCard from "@/components/VideoCard";
+import Link from "next/link";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
 
 export default function Home() {
 
   const contacts = [
-    { id: 1, platform: "LinkedIn", icon: "/icons/linkedin.png", text: "Buhawie Santos" },
-    { id: 2, platform: "GitHub", icon: "/icons/github.png", text: "BuwieSit" },
-    { id: 3, platform: "Gmail", icon: "/icons/gmail.png", text: "santosbuhawie28@gmail.com" }
+    { id: 1, platform: "LinkedIn", icon: "/icons/linkedin.png", text: "Buhawie Santos", link: "https://www.linkedin.com/in/buhawie-santos-04403232b/" },
+    { id: 2, platform: "GitHub", icon: "/icons/github.png", text: "BuwieSit", link: "https://github.com/BuwieSit" }
   ];
     
   const skillMap = {
@@ -132,7 +133,7 @@ export default function Home() {
         <WebsiteCard 
           type="International Competition"
           title="Business Proposal Website (Tourism)"
-          description="Developed a website business proposal in the tourism field. Used Reactjs for the frontend development."
+          description="Participated in an international competition in Vietnam. Developed a tourism website with React."
           link="https://tahakver2.vercel.app/"
           mockupImg="/websites/tahak.png"
         />
@@ -144,7 +145,7 @@ export default function Home() {
         <WebsiteCard 
           type="School Project"
           title="Municipality Website"
-          description="Designed a website using Figma for UI/UX and developed with JavaScript, PHP for backend, and MySQL for database. Used JSON for data and URL parameters for routing."
+          description="Lead a group for designing a a website using Figma for UI/UX and developing with JavaScript, PHP for backend, and MySQL for database. Used JSON for data and URL parameters for routing."
           link="https://ibajayaklan.vercel.app/"
           mockupImg="/websites/ibajay.png"
         />
@@ -162,28 +163,67 @@ export default function Home() {
         />
       )
     },
+    {
+      id: 4,
+      content: (
+        <WebsiteCard 
+          type="School Project"
+          title="Admin Market Vendor Registration System"
+          description="A project when I was starting to learn working with databases. Contributed a Market Vendor page (Admin) using vanilla HTML, CSS, and JavaScript. Used plugins for converting table data into excel spreadsheet. PHP and MySQL for saving accounts."
+          link="https://team2-web.vercel.app/market_vendor/landingPage.html"
+          mockupImg="/websites/vendor.png"
+        />
+      )
+    },
     
   ];
+
+  const combinedProjects = [...websiteProjects, ...videoProjects]
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center font-poppins mt-20 min-h-screen">
 
-      <section className="w-full px-5 py-10 flex flex-col items-center justify-center border-b">
-        <Image src={"/editor_logo/dark_nobg.png"} alt={"Logo"} width={300} height={300} loading="eager"/>
-        <div className="w-full flex items-center justify-center gap-30 p-5">
-          {contacts.map((contact) => (
-            <div key={contact.id} className="relative flex flex-col justify-center items-center group transition ease-in-out cursor-pointer">
-              <Image src={contact.icon} alt={contact.platform} width={40} height={40} priority={true}/>
-              <p className="absolute text-nowrap text-editor-primary text-[0.9rem] font-bold transition ease-in-out opacity-0 translate-y-5 group-hover:opacity-100 group-hover:-translate-y-10 pointer-events-none">{contact.text}</p>
-            </div>
-           
-          ))}
-         
+      <section id="home" className="w-full min-h-screen px-5 py-10 flex flex-col gap-10 items-center justify-start border-b text-editor-primary">
+        
+        <div className="w-[80%] py-5 flex flex-col items-start justify-center">
+          <h1 className="text-8xl font-bebas">Buhawie Santos</h1>
+          <p className="italic">Frontend Developer / Professional Video Editor</p>
+          <div className="flex items-center justify-center gap-5 p-5">
+            {contacts.map((contact) => (
+              <Link href={contact.link} target="_blank" rel="noopener noreferrer" key={contact.id} className="relative flex flex-col justify-center items-center group transition ease-in-out cursor-pointer">
+                <Image src={contact.icon} alt={contact.platform} width={40} height={40} priority={true}/>
+                <p className="absolute text-nowrap text-[0.9rem] font-bold transition ease-in-out opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-10 pointer-events-none">{contact.text}</p>
+              </Link>
+            
+            ))}
+          </div>
         </div>
+
+        <div className="w-[80%] py-5 flex flex-col items-end justify-center">
+            <div className="flex gap-5">
+              <Link href={"#contacts"}>
+                <button className="bg-linear-to-br from-editor-surface via-editor-accent to-editor-primary shadow-editor-accent shadow-[0px_0px_10px] p-5 rounded-3xl text-editor-bg font-bold cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-[0px_5px_10px]">
+                  Get in Touch
+                </button>
+              </Link>
+              <Link href={"#projects"}>
+                <button className="cursor-pointer transition-all duration-300 ease-in-out border border-editor-primary p-5 rounded-3xl hover:bg-editor-primary hover:text-editor-bg">
+                  See Projects
+                </button>
+              </Link>
+              
+            </div>
+            
+        </div>
+        
+        <div className="mt-10 w-full relative">
+          <TestimonialCarousel items={combinedProjects}/>
+        </div>
+        
       </section>
 
-      <section className="relative py-5 w-full min-h-screen inset-shadow-[0px_0px_50px] inset-shadow-editor-accent bg-editor-primary text-editor-bg font-poppins flex flex-col gap-10 justify-center items-center overflow-hidden">
-        <h2 className="text-title-size font-times-new italic">About me</h2>
+      <section id="about" className="relative py-5 w-full min-h-screen inset-shadow-[0px_0px_50px] inset-shadow-editor-accent bg-editor-primary text-editor-bg font-poppins flex flex-col gap-10 justify-center items-center overflow-hidden">
+        <h2 className="text-title-size font-editor-title italic">About</h2>
         
         <div className="bg-editor-surface blur-[100px] opacity-20 absolute w-100 aspect-square rounded-full -top-20 -left-10 pointer-events-none"/>
         <div className="bg-editor-surface blur-[100px] opacity-20 absolute w-100 aspect-square rounded-full -bottom-10 -right-20 pointer-events-none"/>
@@ -201,25 +241,36 @@ export default function Home() {
 
         <div className="w-[80%] h-0.5 shadow-[0px_0px_80px] rounded-full bg-editor-bg"/>
 
-        <div className="flex justify-center items-center gap-5 flex-wrap min-h-50 group">
-          {Object.values(skillMap).map((skill) => (
-            <div 
-              key={skill.text} 
-              className="flex flex-col items-center justify-between font-bold min-h-25 transition duration-300 group-hover:saturate-0 hover:saturate-100!"
-            >
-              <Image src={skill.icon} alt={skill.text} width={50} height={50} loading="lazy" />
-              <p>{skill.text}</p>
-            </div>
-          ))}
+        <div className="w-full flex flex-col justify-center items-center">
+          <h2 className="text-title-size font-editor-title italic">Skills</h2>
+          <div className="flex justify-center items-center gap-5 flex-wrap min-h-50 group">
+            
+            {Object.values(skillMap).map((skill) => (
+              <div 
+                key={skill.text} 
+                className="flex flex-col items-center justify-between font-bold min-h-25 transition duration-300 group-hover:saturate-0 hover:saturate-100!"
+              >
+                <Image src={skill.icon} alt={skill.text} width={50} height={50} loading="lazy" />
+                <p>{skill.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
+        
 
       </section>
 
-      <section className="text-editor-primary w-full min-h-screen">
+      <section id="projects" className="text-editor-primary w-full min-h-screen flex flex-col justify-center items-center py-10">
+        <h2 className="text-title-size font-editor-title italic">Website Projects</h2>
           <Carousel items={websiteProjects} />
       </section>
-      <section className="text-editor-primary w-full min-h-screen">
+      <section className="text-editor-primary w-full min-h-screen  flex flex-col justify-center items-center py-10">
+        <h2 className="text-title-size font-editor-title italic">Video Edits</h2>
           <Carousel items={videoProjects} />
+      </section>
+
+      <section id="contacts" className="text-editor-primary w-full min-h-screen">
+          
       </section>
     </div>
   );
