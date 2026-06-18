@@ -54,26 +54,36 @@ export default function RootLayout({
       className={`${poppins.variable} ${timesNewRomanMt.variable} ${bebas.variable} font-sans antialiased`}
     >
       <body className="flex flex-col bg-editor-bg">
+        {/* --- 1. Small Screen Notice (Visible on mobile/tablet, hidden from 1000px up) --- */}
+        <div className="flex min-h-screen w-full flex-col items-center justify-center p-8 text-center min-[1000px]:hidden">
+          <p className="text-base font-medium opacity-60 max-w-sm tracking-wide">
+            View this webpage in laptops, desktops, or enable desktop mode. Thank you :)
+          </p>
+        </div>
 
-        <header className="fixed top-0 w-full py-5 flex items-center justify-center z-500">
-          <Image src={"/editor_logo/dark_nobg.png"} alt={"Logo"} width={100} height={100} loading="eager"/>
-          <div className="bg-editor-surface/30 backdrop-blur-3xl h-15 p-5 rounded-full">
-            <ul className="w-full h-full flex gap-10 items-center justify-between">
-              {navItems.map((item) => (
-                <li key={item.id} className="flex items-center justify-center group transition ease-in-out cursor-pointer text-editor-primary font-bold">
-                  <Link href={`#${item.link}`}><p>{item.text}</p></Link>
-                  <div className="absolute bottom-0 font-bold transition ease-in-out -translate-y-5 opacity-0 group-hover:opacity-100 group-hover:translate-y-3 border-0 px-2 py-1 rounded-full drop-shadow-[0px_0px_20px] drop-shadow-editor-bg">
-                    {item.icon}
-                  </div>
-                  
-              </li>
-              ))}
-            </ul>
-          </div>
-        </header>
 
-        <main className="bg-editor-bg w-full">{children}</main>
-        <footer></footer>
+        <div className="hidden min-[1000px]:flex flex-col w-full min-h-screen">
+          <header className="fixed top-0 w-full py-5 flex items-center justify-center z-500">
+            <Image src={"/editor_logo/dark_nobg.png"} alt={"Logo"} width={100} height={100} loading="eager"/>
+            <div className="bg-editor-surface/30 backdrop-blur-3xl h-15 p-5 rounded-full">
+              <ul className="w-full h-full flex gap-10 items-center justify-between">
+                {navItems.map((item) => (
+                  <li key={item.id} className="flex items-center justify-center group transition ease-in-out cursor-pointer text-editor-primary font-bold">
+                    <Link href={`#${item.link}`}><p>{item.text}</p></Link>
+                    <div className="absolute bottom-0 font-bold transition ease-in-out -translate-y-5 opacity-0 group-hover:opacity-100 group-hover:translate-y-3 border-0 px-2 py-1 rounded-full drop-shadow-[0px_0px_20px] drop-shadow-editor-bg">
+                      {item.icon}
+                    </div>
+                    
+                </li>
+                ))}
+              </ul>
+            </div>
+          </header>
+
+          <main className="bg-editor-bg w-full">{children}</main>
+          <footer></footer>
+        </div>
+        
       </body>
     </html>
   );
