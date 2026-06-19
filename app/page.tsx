@@ -1,11 +1,39 @@
+'use client';
+
 import Image from "next/image";
 import Carousel from "@/components/Carousel";
 import WebsiteCard from "@/components/WebsiteCard";
 import VideoCard from "@/components/VideoCard";
 import Link from "next/link";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import { useState } from "react";
+import { handleSendEmail } from "./actions";
+
 
 export default function Home() {
+  const [clientEmail, setClientEmail ] = useState('');
+  const [clientSubject, setClientSubject ] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSending(true);
+    setStatusMessage('');
+
+    const result = await handleSendEmail(clientEmail, clientSubject);
+    
+    setIsSending(false);
+
+    if (result.success) {
+      setStatusMessage('Email sent! Kindly wait for my reply through email. Thank you!');
+      setClientEmail('');
+      setClientSubject('');
+    } else {
+      setStatusMessage(result.error || 'Something went wrong.');
+    }
+  };
+
 
   const contacts = [
     { id: 1, platform: "LinkedIn", icon: "/icons/linkedin.png", text: "Buhawie Santos", link: "https://www.linkedin.com/in/buhawie-santos-04403232b/" },
@@ -269,8 +297,40 @@ export default function Home() {
           <Carousel items={videoProjects} />
       </section>
 
-      <section id="contacts" className="text-editor-primary w-full min-h-screen">
+      <section id="contacts" className="text-editor-primary w-full min-h-screen flex items-center justify-center">
+        <form onSubmit={handleSubmit} className=" w-1/2 flex flex-col gap-4 bg-editor-primary p-6 rounded-xl">
+          <h2 className="text-xl font-bold text-white">Contact Me</h2>
           
+          <input 
+            type="email" 
+            placeholder="Your Email"
+            value={clientEmail}
+            onChange={(e) => setClientEmail(e.target.value)}
+            required
+            className="p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
+          />
+
+          <input 
+            type="text" 
+            placeholder="Subject / Message Summary"
+            value={clientSubject}
+            onChange={(e) => setClientSubject(e.target.value)}
+            required
+            className="p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
+          />
+
+          <button 
+            type="submit" 
+            disabled={isSending}
+            className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded disabled:opacity-50 transition"
+          >
+            {isSending ? 'Sending...' : 'Send Message'}
+          </button>
+
+          {statusMessage && (
+            <p className="text-sm mt-2 text-zinc-300 text-center">{statusMessage}</p>
+          )}
+        </form>
       </section>
     </div>
   );
