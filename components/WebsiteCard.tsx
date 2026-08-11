@@ -37,8 +37,8 @@ export default function WebsiteCard({ type, title, description, link, mockupImg 
       <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-editor-accent/70 via-editor-primary/80 to-editor-primary/95 -z-10" />
 
       {/* 3. Top Section: Type Tag */}
-      <div className="pt-6 pl-6 self-start">
-        <span className="text-xs uppercase tracking-wider bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full opacity-80">
+      <div className="pt-3 sm:pt-6 pl-3 sm:pl-6 self-start">
+        <span className="text-[10px] sm:text-xs uppercase tracking-wider bg-black/30 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full opacity-80">
           {type}
         </span>
       </div>
@@ -47,21 +47,21 @@ export default function WebsiteCard({ type, title, description, link, mockupImg 
       <div className="flex-grow min-h-[25%]" />
 
       {/* 4. Bottom Section: Info Typography */}
-      <div className="pb-6 px-6 z-10 w-full bg-gradient-to-t from-editor-primary via-editor-primary/60 to-transparent pt-16 mt-auto">
+      <div className="pb-3 sm:pb-6 px-3 sm:px-6 z-10 w-full bg-gradient-to-t from-editor-primary via-editor-primary/60 to-transparent pt-8 sm:pt-16 mt-auto">
         <h4 
           className="font-bold mb-1 line-clamp-2 drop-shadow-md transition-colors"
           style={{ 
-            // Scales fluidly between 14px (minimum) and 24px (maximum) based on container width
-            fontSize: 'clamp(0.875rem, 2.5cqw, 1.5rem)' 
+            // Scales fluidly between 13px (minimum) and 24px (maximum) based on container width
+            fontSize: 'clamp(0.813rem, 2.5cqw, 1.5rem)' 
           }}
         >
           {title}
         </h4>
         <p 
-          className="opacity-80 drop-shadow-sm line-clamp-1"
+          className="opacity-80 drop-shadow-sm line-clamp-1 sm:line-clamp-2"
           style={{ 
-            // Scales fluidly between 11px (minimum) and 14px (maximum)
-            fontSize: 'clamp(0.688rem, 1.5cqw, 0.875rem)' 
+            // Scales fluidly between 10px (minimum) and 14px (maximum)
+            fontSize: 'clamp(0.625rem, 1.5cqw, 0.875rem)' 
           }}
         >
           {description}
