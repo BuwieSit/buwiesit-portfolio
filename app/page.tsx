@@ -297,40 +297,138 @@ export default function Home() {
           <Carousel items={videoProjects} />
       </section>
 
-      <section id="contacts" className="text-editor-primary w-full min-h-screen flex items-center justify-center">
-        <form onSubmit={handleSubmit} className=" w-1/2 flex flex-col gap-4 bg-editor-primary p-6 rounded-xl">
-          <h2 className="text-xl font-bold text-white">Contact Me</h2>
+      <section id="contacts" className="relative py-20 w-full min-h-screen inset-shadow-[0px_0px_50px] inset-shadow-editor-accent bg-editor-primary text-editor-bg font-poppins flex flex-col gap-10 justify-center items-center overflow-hidden">
+        {/* Background glow effects */}
+        <div className="bg-editor-surface blur-[120px] opacity-25 absolute w-[500px] aspect-square rounded-full -top-20 -left-20 pointer-events-none" />
+        <div className="bg-editor-accent blur-[140px] opacity-20 absolute w-[500px] aspect-square rounded-full -bottom-20 -right-20 pointer-events-none" />
+
+        <div className="flex flex-col items-center gap-3 text-center z-10">
+          <h2 className="text-title-size font-editor-title italic tracking-wider text-editor-bg drop-shadow-[0px_2px_10px_rgba(0,0,0,0.5)]">
+            Contact Me
+          </h2>
+          <p className="text-xs sm:text-sm opacity-80 max-w-md font-poppins px-4">
+            Got a question, project proposal, or edit request? Send me a message and I&apos;ll get back to you soon.
+          </p>
+        </div>
+
+        {/* Main 2-Column Split Container */}
+        <div className="w-[85%] max-w-5xl z-10 flex flex-col lg:flex-row items-stretch justify-between gap-10 bg-editor-bg/5 backdrop-blur-2xl border border-editor-surface/30 p-8 sm:p-12 rounded-3xl shadow-2xl shadow-black/40 relative">
           
-          <input 
-            type="email" 
-            placeholder="Your Email"
-            value={clientEmail}
-            onChange={(e) => setClientEmail(e.target.value)}
-            required
-            className="p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
-          />
+          {/* Left Column: Direct Contact Info */}
+          <div className="lg:w-5/12 flex flex-col justify-between gap-8 text-editor-bg">
+            <div className="flex flex-col gap-4">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-editor-surface/20 border border-editor-surface/30 text-xs font-semibold tracking-wider text-editor-surface w-fit">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Available for Freelance & Projects
+              </div>
+              
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-editor-bg mt-2">
+                Let&apos;s talk about your next project
+              </h3>
+              
+              <p className="text-xs sm:text-sm opacity-80 leading-relaxed">
+                Whether you need web application development, UI/UX implementation, or professional video editing, I&apos;m ready to collaborate.
+              </p>
+            </div>
 
-          <input 
-            type="text" 
-            placeholder="Subject / Message Summary"
-            value={clientSubject}
-            onChange={(e) => setClientSubject(e.target.value)}
-            required
-            className="p-2 rounded bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
-          />
+            <div className="flex flex-col gap-4">
+              {/* Direct Gmail Card */}
+              <a 
+                href="mailto:buhawie.santos@gmail.com" 
+                className="flex items-center gap-4 p-4 rounded-2xl bg-editor-surface/10 border border-editor-surface/20 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group"
+              >
+                <div className="w-11 h-11 rounded-xl bg-editor-surface/20 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                  <Image src="/icons/gmail.png" alt="Email" width={22} height={22} />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-[10px] uppercase tracking-wider text-editor-surface/80 font-semibold">Direct Email</p>
+                  <p className="text-xs sm:text-sm font-bold text-editor-bg group-hover:text-editor-surface transition-colors truncate">
+                    santosbuhawie28@gmail.com
+                  </p>
+                </div>
+              </a>
 
-          <button 
-            type="submit" 
-            disabled={isSending}
-            className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded disabled:opacity-50 transition"
-          >
-            {isSending ? 'Sending...' : 'Send Message'}
-          </button>
+              {/* Social Contacts */}
+              <div className="grid grid-cols-2 gap-3">
+                {contacts.map((contact) => (
+                  <Link 
+                    key={contact.id} 
+                    href={contact.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-3 p-3.5 rounded-2xl bg-editor-surface/10 border border-editor-surface/20 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group"
+                  >
+                    <Image src={contact.icon} alt={contact.platform} width={20} height={20} className="group-hover:scale-110 transition-transform shrink-0" />
+                    <div className="overflow-hidden">
+                      <p className="text-[10px] uppercase tracking-wider text-editor-surface/80 font-semibold">{contact.platform}</p>
+                      <p className="text-xs font-bold text-editor-bg truncate">{contact.text}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
 
-          {statusMessage && (
-            <p className="text-sm mt-2 text-zinc-300 text-center">{statusMessage}</p>
-          )}
-        </form>
+          {/* Vertical Divider for large screens */}
+          <div className="hidden lg:block w-px bg-editor-surface/20 self-stretch" />
+
+          {/* Right Column: Form */}
+          <div className="lg:w-6/12 flex flex-col justify-center">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="client-email" className="text-xs font-semibold uppercase tracking-wider text-editor-surface/90">
+                  Your Email
+                </label>
+                <input 
+                  id="client-email"
+                  type="email" 
+                  placeholder="name@example.com"
+                  value={clientEmail}
+                  onChange={(e) => setClientEmail(e.target.value)}
+                  required
+                  className="w-full px-5 py-4 rounded-2xl bg-editor-primary/60 border border-editor-surface/30 text-editor-bg placeholder:text-editor-bg/40 focus:outline-none focus:border-editor-surface focus:ring-2 focus:ring-editor-surface/50 transition-all duration-300 text-sm shadow-inner"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="client-subject" className="text-xs font-semibold uppercase tracking-wider text-editor-surface/90">
+                  Subject / Message Summary
+                </label>
+                <input 
+                  id="client-subject"
+                  type="text" 
+                  placeholder="What would you like to discuss?"
+                  value={clientSubject}
+                  onChange={(e) => setClientSubject(e.target.value)}
+                  required
+                  className="w-full px-5 py-4 rounded-2xl bg-editor-primary/60 border border-editor-surface/30 text-editor-bg placeholder:text-editor-bg/40 focus:outline-none focus:border-editor-surface focus:ring-2 focus:ring-editor-surface/50 transition-all duration-300 text-sm shadow-inner"
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={isSending}
+                className="w-full mt-2 bg-linear-to-br from-editor-surface via-editor-accent to-editor-primary shadow-editor-accent shadow-[0px_0px_15px] py-4 rounded-2xl text-editor-bg font-bold cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-[0px_5px_20px] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 text-sm tracking-wide"
+              >
+                {isSending ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-editor-bg border-t-transparent rounded-full animate-spin" />
+                    <span>Sending Message...</span>
+                  </>
+                ) : (
+                  <span>Send Message</span>
+                )}
+              </button>
+
+              {statusMessage && (
+                <div className="p-4 rounded-2xl bg-editor-surface/20 border border-editor-surface/40 text-center animate-fade-in">
+                  <p className="text-xs sm:text-sm text-editor-bg font-semibold">{statusMessage}</p>
+                </div>
+              )}
+            </form>
+          </div>
+
+        </div>
       </section>
     </div>
   );
