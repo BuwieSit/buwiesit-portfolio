@@ -211,40 +211,66 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center font-poppins mt-20 min-h-screen">
 
-      <section id="home" className="w-full min-h-screen px-4 sm:px-8 py-8 sm:py-10 pt-24 sm:pt-32 flex flex-col gap-6 sm:gap-10 items-center justify-start border-b text-editor-primary max-w-7xl mx-auto">
+      <section id="home" className="relative w-full min-h-screen px-4 sm:px-8 py-8 sm:py-12 pt-28 sm:pt-36 flex flex-col justify-between items-center border-b border-editor-border/40 text-editor-primary max-w-7xl mx-auto overflow-hidden">
         
-        <div className="w-full sm:w-[90%] md:w-[80%] py-3 sm:py-5 flex flex-col items-start justify-center">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-none">Buhawie Santos</h1>
-          <p className="italic text-xs sm:text-base md:text-lg opacity-90 mt-1">Frontend Developer / Professional Video Editor</p>
-          <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-5 p-2 sm:p-5 flex-wrap">
-            {contacts.map((contact) => (
-              <Link href={contact.link} target="_blank" rel="noopener noreferrer" key={contact.id} className="relative flex flex-col justify-center items-center group transition ease-in-out cursor-pointer">
-                <Image src={contact.icon} alt={contact.platform} width={40} height={40} priority={true} className="w-8 h-8 sm:w-10 sm:h-10" />
-                <p className="absolute text-nowrap text-[0.8rem] sm:text-[0.9rem] font-bold transition ease-in-out opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-10 pointer-events-none z-20">{contact.text}</p>
-              </Link>
-            
-            ))}
-          </div>
-        </div>
+        {/* Subtle Ambient Background Glows */}
+        <div className="bg-editor-surface/40 blur-[130px] opacity-30 absolute w-72 sm:w-96 md:w-[500px] aspect-square rounded-full -top-10 -left-10 pointer-events-none z-0" />
+        <div className="bg-editor-accent/30 blur-[140px] opacity-20 absolute w-72 sm:w-96 md:w-[500px] aspect-square rounded-full top-1/3 -right-10 pointer-events-none z-0" />
 
-        <div className="w-full sm:w-[90%] md:w-[80%] py-3 sm:py-5 flex flex-col items-center sm:items-end justify-center">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-5 w-full sm:w-auto">
-              <Link href={"#contacts"} className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto bg-linear-to-br from-editor-surface via-editor-accent to-editor-primary shadow-editor-accent shadow-[0px_0px_10px] px-6 py-4 sm:p-5 rounded-2xl sm:rounded-3xl text-editor-bg font-bold cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-2 hover:shadow-[0px_5px_10px] text-sm sm:text-base">
-                  Get in Touch
-                </button>
-              </Link>
-              <Link href={"#projects"} className="w-full sm:w-auto">
-                <button className="w-full sm:w-auto cursor-pointer transition-all duration-300 ease-in-out border border-editor-primary px-6 py-4 sm:p-5 rounded-2xl sm:rounded-3xl hover:bg-editor-primary hover:text-editor-bg text-sm sm:text-base">
-                  See Projects
-                </button>
-              </Link>
-              
+        {/* Main Content Layout Container */}
+        <div className="w-full sm:w-[92%] md:w-[85%] z-10 flex flex-col md:flex-row items-center md:items-end justify-between gap-8 sm:gap-12 my-auto">
+          
+          {/* Left Column: Name, Subtitle & Social Links */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left gap-3 sm:gap-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-editor-surface/30 border border-editor-accent/30 text-[11px] sm:text-xs font-semibold tracking-wider text-editor-accent w-fit shadow-xs">
+              <span className="w-2 h-2 rounded-full bg-editor-accent animate-pulse" />
+              PORTFOLIO & WORK
             </div>
             
+            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-none drop-shadow-sm text-editor-primary">
+              Buhawie Santos
+            </h1>
+            
+            <p className="italic text-xs sm:text-base md:text-lg text-editor-accent font-medium tracking-wide">
+              Frontend Developer / Professional Video Editor
+            </p>
+
+            <div className="flex items-center justify-center md:justify-start gap-4 sm:gap-6 pt-2">
+              {contacts.map((contact) => (
+                <Link 
+                  href={contact.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  key={contact.id} 
+                  className="relative flex flex-col justify-center items-center group transition-all duration-300 ease-in-out cursor-pointer p-2.5 rounded-2xl bg-editor-surface/20 border border-editor-surface/40 hover:bg-editor-surface/40 hover:border-editor-accent/50 hover:shadow-md hover:-translate-y-1"
+                >
+                  <Image src={contact.icon} alt={contact.platform} width={40} height={40} priority={true} className="w-7 h-7 sm:w-9 sm:h-9" />
+                  <p className="absolute text-nowrap text-[0.75rem] sm:text-[0.85rem] font-bold transition-all duration-300 opacity-0 translate-y-5 group-hover:opacity-100 group-hover:translate-y-12 bg-editor-primary text-editor-bg px-2.5 py-1 rounded-lg shadow-lg pointer-events-none z-30">
+                    {contact.text}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 sm:gap-5 w-full sm:w-auto shrink-0 justify-center items-center md:items-end">
+            <Link href={"#contacts"} className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-gradient-to-r from-editor-accent via-editor-accent/90 to-editor-primary shadow-editor-accent/40 shadow-[0px_4px_20px] px-7 py-4 sm:py-4.5 rounded-2xl sm:rounded-3xl text-editor-bg font-bold cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1.5 hover:shadow-[0px_8px_25px] active:scale-[0.98] text-sm sm:text-base tracking-wide flex items-center justify-center gap-2">
+                Get in Touch
+              </button>
+            </Link>
+            <Link href={"#projects"} className="w-full sm:w-auto">
+              <button className="w-full sm:w-auto cursor-pointer transition-all duration-300 ease-in-out border-2 border-editor-primary/80 bg-editor-surface/10 backdrop-blur-md px-7 py-4 sm:py-4.5 rounded-2xl sm:rounded-3xl text-editor-primary font-bold hover:bg-editor-primary hover:text-editor-bg hover:-translate-y-1.5 hover:shadow-lg active:scale-[0.98] text-sm sm:text-base tracking-wide flex items-center justify-center gap-2">
+                See Projects
+              </button>
+            </Link>
+          </div>
+
         </div>
         
-        <div className="mt-6 sm:mt-10 w-full relative">
+        {/* Bottom Marquee Section */}
+        <div className="mt-8 sm:mt-12 w-full relative z-10">
           <TestimonialCarousel items={combinedProjects}/>
         </div>
         
