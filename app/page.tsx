@@ -873,80 +873,320 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom Container: Tech Stack (Centered max-w-5xl) */}
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 flex flex-col items-center gap-12 z-10">
 
-          {/* Tech Stack — open directory grid with comic distorted logo popups */}
-          <div className="w-full flex flex-col gap-6">
-            <div className="border-b border-editor-surface/20 pb-4">
-              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bebas tracking-wide text-editor-bg">
-                Tech Stack
-              </h3>
-            </div>
+      </section>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7 w-full">
-              {skillCategories.map((category) => (
-                <div 
-                  key={category.title}
-                  className="flex flex-col gap-3"
-                >
-                  <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/15">
-                    {category.icon}
-                    <span className="text-xs font-bold uppercase tracking-wider text-editor-surface">
-                      {category.title}
-                    </span>
-                  </div>
 
-                  <div className="flex flex-wrap gap-2 pt-1">
-                    {category.skills.map((skill) => {
-                      const iconPath = skillIcons[skill];
-                      return iconPath ? (
-                        <div
-                          key={skill}
-                          tabIndex={0}
-                          role="button"
-                          aria-label={`${skill} skill icon popup`}
-                          className="group relative inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/85 hover:text-editor-bg hover:bg-editor-surface/20 border border-editor-surface/20 hover:border-editor-accent/70 cursor-pointer active:scale-95 transition-all duration-200 select-none hover:z-30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-editor-accent"
-                        >
-                          <span className="relative z-10 transition-transform duration-200 group-hover:scale-105 inline-block">
-                            {skill}
-                          </span>
+      {/* ================================================================ */}
+      {/* TECH STACK SECTION — Full-bleed maximalist comic architecture    */}
+      {/* Lives OUTSIDE #about, its own full-width block                   */}
+      {/* ================================================================ */}
+      <section
+        id="tech-stack"
+        className="relative w-full bg-editor-primary text-editor-bg font-poppins overflow-hidden border-b border-editor-surface/20 py-16 sm:py-24"
+      >
+        {/* ── Giant faded "TECH STACK" background text ── */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute inset-0 flex items-center justify-start overflow-hidden z-0"
+        >
+          <span
+            className="font-bebas leading-none whitespace-nowrap"
+            style={{
+              fontSize: 'clamp(7rem, 22vw, 22rem)',
+              background: 'linear-gradient(to right, rgba(201,184,150,0.13) 0%, rgba(201,184,150,0.04) 55%, rgba(201,184,150,0) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '0.02em',
+              paddingLeft: '2vw',
+            }}
+          >
+            TECH STACK
+          </span>
+        </div>
 
-                          {/* Comic Distorted Logo Popup */}
-                          <div 
-                            className="comic-distort-bubble hidden group-hover:flex group-focus-visible:flex absolute bottom-[calc(100%+8px)] left-1/2 z-40 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.35)]"
-                          >
-                            <div className="relative flex items-center justify-center p-2 rounded-xl bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]">
-                              <div className="relative w-8 h-8 sm:w-9 sm:h-9">
-                                <Image 
-                                  src={iconPath} 
-                                  alt={`${skill} icon`} 
-                                  fill 
-                                  className="comic-inner-icon object-contain" 
-                                  sizes="36px"
-                                />
-                              </div>
-                              {/* Comic Speech Pointer pointing to text base */}
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-solid border-t-editor-primary border-t-[6px] border-x-transparent border-x-[5px] border-b-0" />
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <span 
-                          key={skill}
-                          className="inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/75 border border-transparent select-none"
-                        >
+        {/* ── Section Header ── */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 mb-10 sm:mb-14">
+          <div className="flex items-end gap-4 border-b-2 border-editor-surface/20 pb-5">
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-bebas tracking-wide text-editor-bg leading-none">
+              Tech Stack
+            </h2>
+            <span className="font-times-new italic text-editor-surface/70 text-sm sm:text-base pb-1 leading-tight">
+              — Architecture &amp; Toolchain
+            </span>
+          </div>
+        </div>
+
+        {/* ── DESKTOP Architecture Pipeline (hidden on mobile) ── */}
+        <div className="relative z-10 hidden lg:block w-full max-w-7xl mx-auto px-4 sm:px-8">
+
+          {/* ── Top 4 columns: UI/UX → Frontend+CMS → APIs → Backend ── */}
+          <div className="relative flex flex-row items-start gap-0 w-full">
+
+            {/* Shared skill pill renderer as a function-like component */}
+            {(() => {
+              // Helper: render skill pills (preserves full comic popup logic)
+              const renderPills = (skills: string[]) => (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {skills.map((skill) => {
+                    const iconPath = skillIcons[skill];
+                    return iconPath ? (
+                      <div
+                        key={skill}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`${skill} icon`}
+                        className="group relative inline-flex items-center text-[10px] sm:text-[11px] font-medium px-2 py-1 rounded-md bg-editor-surface/10 text-editor-bg/85 hover:text-editor-bg hover:bg-editor-surface/20 border border-editor-surface/20 hover:border-editor-accent/70 cursor-pointer active:scale-95 transition-all duration-200 select-none hover:z-30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-editor-accent"
+                      >
+                        <span className="relative z-10 transition-transform duration-200 group-hover:scale-105 inline-block">
                           {skill}
                         </span>
-                      );
-                    })}
-                  </div>
+                        <div className="comic-distort-bubble hidden group-hover:flex group-focus-visible:flex absolute bottom-[calc(100%+8px)] left-1/2 z-40 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.35)]">
+                          <div className="relative flex items-center justify-center p-2 rounded-xl bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]">
+                            <div className="relative w-8 h-8">
+                              <Image src={iconPath} alt={`${skill}`} fill className="comic-inner-icon object-contain" sizes="32px" />
+                            </div>
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-solid border-t-editor-primary border-t-[6px] border-x-transparent border-x-[5px] border-b-0" />
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <span key={skill} className="inline-flex items-center text-[10px] sm:text-[11px] font-medium px-2 py-1 rounded-md bg-editor-surface/10 text-editor-bg/75 border border-transparent select-none">
+                        {skill}
+                      </span>
+                    );
+                  })}
                 </div>
-              ))}
+              );
+
+              // Helper: category card
+              const CategoryCard = ({
+                title, icon, skills, accent = false,
+              }: { title: string; icon: React.ReactNode; skills: string[]; accent?: boolean }) => (
+                <div className={`flex flex-col gap-2 rounded-xl border-2 p-4 relative ${accent ? 'border-editor-accent/60 bg-editor-accent/10 shadow-[4px_4px_0px_#8B6F4E]' : 'border-editor-surface/30 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896]'}`}>
+                  <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/20">
+                    <span className="text-editor-surface">{icon}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-editor-surface font-bebas text-sm">{title}</span>
+                  </div>
+                  {renderPills(skills)}
+                </div>
+              );
+
+              return (
+                <>
+                  {/* ─── COLUMN 1: UI/UX & Multimedia (front layer) ─── */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-3 relative">
+                    {/* Front layer badge */}
+                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-bg text-editor-primary border-2 border-editor-primary shadow-[2px_2px_0px_#2A1F14] font-bebas text-xs tracking-wider mb-1">
+                      ✦ FRONT LAYER
+                    </div>
+                    <CategoryCard
+                      title="UI/UX & Multimedia"
+                      icon={<Sparkles className="w-4 h-4" />}
+                      skills={["Figma", "Adobe XD", "Adobe Illustrator", "Lucidchart", "Miro", "Video Editing"]}
+                      accent
+                    />
+                    {/* Horizontal connector line from col 1 → col 2 */}
+                    <div className="absolute top-[45%] right-0 translate-x-full w-full flex items-center pointer-events-none z-20" style={{width: 'calc(100% + 0px)', left: '100%', top: '45%', position: 'absolute'}}>
+                    </div>
+                  </div>
+
+                  {/* SVG Connector: col1 → col2 */}
+                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10 relative">
+                    <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
+                      <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
+                      <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
+                    </svg>
+                  </div>
+
+                  {/* ─── COLUMN 2: Frontend + CMS ─── */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-3">
+                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
+                      LAYER 02
+                    </div>
+                    <CategoryCard
+                      title="Frontend Engineering"
+                      icon={<Code2 className="w-4 h-4" />}
+                      skills={["React", "Next.js", "Tailwind CSS", "Sass/SCSS", "JavaScript (ES6+)"]}
+                    />
+                    <CategoryCard
+                      title="CMS & Web Platforms"
+                      icon={<Globe className="w-4 h-4" />}
+                      skills={["WordPress", "Elementor", "Advanced Custom Fields (ACF)"]}
+                    />
+                  </div>
+
+                  {/* SVG Connector: col2 → col3 */}
+                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10">
+                    <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
+                      <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
+                      <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
+                    </svg>
+                  </div>
+
+                  {/* ─── COLUMN 3: APIs ─── */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-3">
+                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
+                      LAYER 03
+                    </div>
+                    <CategoryCard
+                      title="APIs & Data Fetching"
+                      icon={<Layers className="w-4 h-4" />}
+                      skills={["RESTful APIs", "Axios", "TanStack Query", "Postman"]}
+                    />
+                  </div>
+
+                  {/* SVG Connector: col3 → col4 */}
+                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10">
+                    <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
+                      <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
+                      <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
+                    </svg>
+                  </div>
+
+                  {/* ─── COLUMN 4: Backend & DB ─── */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-3">
+                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
+                      LAYER 04
+                    </div>
+                    <CategoryCard
+                      title="Backend & Database"
+                      icon={<Database className="w-4 h-4" />}
+                      skills={["Python", "Supabase", "PostgreSQL", "MySQL", "SQL"]}
+                    />
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+
+          {/* ── Vertical drop lines from each column to pipeline bar ── */}
+          <div className="relative w-full flex flex-row mt-6 pointer-events-none" aria-hidden="true">
+            {/* 4 column drop connectors spread evenly */}
+            {[12.5, 37.5, 62.5, 87.5].map((pct, i) => (
+              <div
+                key={i}
+                className="absolute flex flex-col items-center"
+                style={{ left: `${pct}%`, top: 0 }}
+              >
+                <div className="w-px h-8 border-l-2 border-dashed border-editor-surface/30" />
+                <div className="w-2.5 h-2.5 rounded-full bg-editor-surface/50 border border-editor-surface animate-pulse" />
+              </div>
+            ))}
+          </div>
+
+          {/* ── Version Control Pipeline Bar ── */}
+          <div className="relative z-20 mt-10 w-full border-2 border-editor-surface/35 rounded-xl bg-editor-surface/5 shadow-[4px_4px_0px_#8B6F4E]">
+            {/* Pipeline tape label top-left */}
+            <div className="absolute -top-3.5 left-6 bg-editor-primary px-3 py-0.5 border border-editor-surface/40 rounded font-bebas text-xs text-editor-surface tracking-widest z-10">
+              ━ VERSION CONTROL &amp; METHODOLOGY PIPELINE ━
+            </div>
+
+            <div className="flex flex-row items-center gap-6 px-6 pt-6 pb-4">
+              {/* Pipeline Icon */}
+              <div className="shrink-0 flex flex-col items-center gap-1">
+                <Terminal className="w-5 h-5 text-editor-surface" />
+                <span className="text-[9px] font-mono text-editor-surface/60 uppercase tracking-widest">CI/CD</span>
+              </div>
+
+              {/* Pipeline dots */}
+              <div className="flex-1 flex flex-row items-center gap-0">
+                {/* Skill pills for Version Control */}
+                {(() => {
+                  const vcSkills = ["Git", "GitHub", "GitLab", "Agile / Scrum", "SRS Documentation"];
+                  return (
+                    <div className="flex flex-wrap gap-2 items-center">
+                      {vcSkills.map((skill, idx) => {
+                        const iconPath = skillIcons[skill];
+                        return (
+                          <div key={skill} className="flex items-center gap-1.5 relative hover:z-40">
+                            {idx > 0 && (
+                              <svg width="20" height="10" viewBox="0 0 20 10" aria-hidden="true">
+                                <line x1="0" y1="5" x2="18" y2="5" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="3 2" opacity="0.5" />
+                                <polygon points="16,2 20,5 16,8" fill="#C9B896" opacity="0.5" />
+                              </svg>
+                            )}
+                            {iconPath ? (
+                              <div
+                                tabIndex={0}
+                                role="button"
+                                aria-label={`${skill} icon`}
+                                className="group relative inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/85 hover:text-editor-bg hover:bg-editor-surface/20 border border-editor-surface/20 hover:border-editor-accent/70 cursor-pointer active:scale-95 transition-all duration-200 select-none hover:z-50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-editor-accent"
+                              >
+                                <span className="relative z-10 group-hover:scale-105 inline-block transition-transform duration-200">{skill}</span>
+                                <div className="comic-distort-bubble hidden group-hover:flex group-focus-visible:flex absolute bottom-[calc(100%+8px)] left-1/2 z-50 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.35)]">
+                                  <div className="relative flex items-center justify-center p-2 rounded-xl bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]">
+                                    <div className="relative w-8 h-8">
+                                      <Image src={iconPath} alt={skill} fill className="comic-inner-icon object-contain" sizes="32px" />
+                                    </div>
+                                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-solid border-t-editor-primary border-t-[6px] border-x-transparent border-x-[5px] border-b-0" />
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <span className="inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/75 border border-transparent select-none">
+                                {skill}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
+              </div>
+
+              {/* Pipeline status badge */}
+              <div className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-bg text-editor-primary border-2 border-editor-primary shadow-[2px_2px_0px_#2A1F14] font-bebas text-[11px] tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                PIPELINE OK
+              </div>
             </div>
           </div>
 
         </div>
+
+        {/* ── MOBILE: Stacked vertical layout (shown on < lg) ── */}
+        <div className="relative z-10 lg:hidden w-full max-w-7xl mx-auto px-4 sm:px-8 flex flex-col gap-6">
+          {skillCategories.map((category) => (
+            <div key={category.title} className="flex flex-col gap-3 border-2 border-editor-surface/25 rounded-xl p-4 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896]">
+              <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/20">
+                <span className="text-editor-surface">{category.icon}</span>
+                <span className="font-bebas text-sm tracking-widest text-editor-surface uppercase">{category.title}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {category.skills.map((skill) => {
+                  const iconPath = skillIcons[skill];
+                  return iconPath ? (
+                    <div
+                      key={skill}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`${skill} icon`}
+                      className="group relative inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/85 hover:text-editor-bg hover:bg-editor-surface/20 border border-editor-surface/20 hover:border-editor-accent/70 cursor-pointer active:scale-95 transition-all duration-200 select-none hover:z-30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-editor-accent"
+                    >
+                      <span className="relative z-10 transition-transform duration-200 group-hover:scale-105 inline-block">{skill}</span>
+                      <div className="comic-distort-bubble hidden group-hover:flex group-focus-visible:flex absolute bottom-[calc(100%+8px)] left-1/2 z-40 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.35)]">
+                        <div className="relative flex items-center justify-center p-2 rounded-xl bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]">
+                          <div className="relative w-8 h-8">
+                            <Image src={iconPath} alt={skill} fill className="comic-inner-icon object-contain" sizes="32px" />
+                          </div>
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-solid border-t-editor-primary border-t-[6px] border-x-transparent border-x-[5px] border-b-0" />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <span key={skill} className="inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/75 border border-transparent select-none">
+                      {skill}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
       </section>
 
       {/* ================================================================ */}

@@ -90,16 +90,16 @@ npm run lint      # Run ESLint
 ```
 editor-portfolio/
 ├── app/
-│   ├── actions.ts          # Next.js Server Action — Resend email handler
-│   ├── favicon.ico         # Site favicon
+│   ├── actions.ts          # Next.js Server Action — validation, rate limiting, honeypot, Resend email handler
 │   ├── globals.css         # Global styles, Tailwind @theme tokens, CSS animations, comic utility classes, comic distort bubble system
+│   ├── icon.png            # Site favicon — dark.png logo (replaces favicon.ico)
 │   ├── layout.tsx          # Root layout: font loading, metadata, Header, Footer
 │   └── page.tsx            # Main page — all sections rendered here (single page)
 ├── api/
 │   └── resend.ts           # Legacy Resend test file (not used in production routing)
 ├── components/
 │   ├── Carousel.tsx            # Interactive 3-up carousel for project cards
-│   ├── Header.tsx              # Fixed floating nav with section-aware color inversion
+│   ├── Header.tsx              # Fixed nav — desktop pill + mobile hamburger drawer with section-aware color inversion
 │   ├── ProjectReelCard.tsx     # Lightweight image+title card used in the hero marquee reel ⭐ NEW
 │   ├── TestimonialCarousel.tsx # Tilted maximalist comic film reel (3-layer: ticker + cards + ticker)
 │   ├── VideoCard.tsx           # YouTube embed card with lazy-loading thumbnail facade
@@ -249,66 +249,102 @@ All dark sections use `scroll-mt-20 sm:scroll-mt-28` to account for the fixed fl
 
 **Path:** `components/Header.tsx`  
 **Type:** `'use client'` — Client Component  
-**Position:** Fixed, `z-[500]`, centered top of viewport.
+**Position:** Fixed, `z-[500]`. Renders **two separate `<header>` elements** — desktop (`hidden md:flex`) and mobile (`md:hidden`) — plus a full-screen mobile drawer overlay at `z-[499]`.
 
-#### Behavior
+#### `NavItem` Interface & Static Array
 
-The header is a floating pill-style navigation bar that **dynamically inverts its color scheme** based on which section is currently in the viewport.
+`navItems` is defined **outside the component** as a module-level constant (no re-creation on render):
 
-**Tracked sections (in scroll order):**
+```ts
+interface NavItem { id: number; Icon: LucideIcon; text: string; link: string; }
+const navItems: NavItem[] = [
+  { id: 1, Icon: Home,      text: 'Home',       link: 'home' },
+  { id: 2, Icon: User,      text: 'About',      link: 'about' },
+  { id: 3, Icon: Briefcase, text: 'Experience', link: 'experience' },
+  { id: 4, Icon: Library,   text: 'Projects',   link: 'projects' },
+  { id: 5, Icon: Send,      text: 'Contacts',   link: 'contacts' },
+];
 ```
-home → about → experience → projects → contacts
+
+New Lucide icons: `Menu`, `X`, `LucideIcon` (type).
+
+#### State
+
+| State | Type | Purpose |
+| :--- | :--- | :--- |
+| `isDarkSection` | `boolean` | Drives logo/nav color inversion |
+| `activeSection` | `string` | Tracks current viewport section |
+| `mobileMenuOpen` | `boolean` | Controls mobile drawer open/close |
+
+#### Shared `pillClass` Helper
+
+```ts
+const pillClass = isDarkSection
+  ? 'bg-editor-primary/85 border-editor-surface/30 text-editor-bg shadow-black/40'
+  : 'bg-editor-surface/35 border-editor-surface/40 text-editor-primary shadow-black/5';
 ```
+Computed once, reused on the pill nav, burger button, and any other inverting pill elements.
 
-**Dark sections** (trigger light logo + light nav pill):
-- `about`, `experience`, `contacts`
+#### Body Scroll Lock
 
-**Light sections** (trigger dark logo + dark nav pill):
-- `home`, `projects`
-
-#### Logo Inversion Logic
-
-Two `<Image>` components are stacked absolutely on top of each other:
-- `dark_nobg.png` — visible on **light** sections (`opacity-100` when `!isDarkSection`)
-- `light_nobg.png` — visible on **dark** sections (`opacity-100` when `isDarkSection`)
-
-Transitions use `transition-opacity duration-500 ease-in-out`. The logo `<Link>` wrapper now uses `.comic-pill` for a tilt-on-hover spring effect.
-
-#### Scroll Detection
-
-```tsx
+```ts
 useEffect(() => {
-  const handleScroll = () => {
-    const headerOffset = 120; // px from top
-    // Loops through sections array, checks getBoundingClientRect().top <= headerOffset
-    // Sets activeSection and isDarkSection accordingly
-  };
-  window.addEventListener('scroll', handleScroll, { passive: true });
-}, []);
+  document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+  return () => { document.body.style.overflow = ''; };
+}, [mobileMenuOpen]);
 ```
+Prevents background scroll while the mobile drawer is open.
 
-#### Nav Items
+#### Desktop Header (`hidden md:flex`)
 
-| ID | Icon | Text | Href |
-| :--- | :--- | :--- | :--- |
-| 1 | `<Home />` | Home | `#home` |
-| 2 | `<User />` | About | `#about` |
-| 3 | `<Briefcase />` | Experience | `#experience` |
-| 4 | `<Library />` | Projects | `#projects` |
-| 5 | `<Send />` | Contacts | `#contacts` |
+Identical behavior to the original:
+- Logo with dual opacity-swap images (`dark_nobg.png` ↔ `light_nobg.png`) in `.comic-pill` wrapper
+- Pill nav with ghost-text, idle-text layer, and comic hover layer (icon pop + word pop) per item
+- Active underline `h-0.5 w-3/4` with section-aware glow
+- Resume CTA in `.comic-btn` with `.comic-icon` + `.comic-text`
 
-#### Comic Hover Interaction
+#### Mobile Header (`md:hidden`) — NEW
 
-Nav items use a custom CSS animation (`comicIconPop` + `comicWordPop`) defined in `globals.css`:
-- At rest: text label visible.
-- On hover: text fades/scales away, then an icon pops in (spring scale + rotate), followed by the text word bursting in beside it.
-- Triggered via `.group:hover .animate-comic-icon` and `.group:hover .animate-comic-word` selectors.
+Compact top bar: logo (left) + burger/close button (right).
 
-#### Active State Indicator
-An underline pill (`h-0.5 w-3/4 rounded-full`) renders absolutely below the active nav item, colored to match the current section theme, with a soft glow `box-shadow`.
+**Burger/close button:**
+- Uses `pillClass` for color inversion
+- Renders `<Menu>` and `<X>` icons stacked absolutely with cross-fade + rotate:
+  - Open state: Menu `opacity-0 scale-50 rotate-90`, X `opacity-100 scale-100 rotate-0`
+  - Closed state: Menu `opacity-100 scale-100 rotate-0`, X `opacity-0 scale-50 -rotate-90`
+- `aria-expanded` reflects drawer state; `aria-label` toggles between "Open menu" / "Close menu"
 
-#### Resume CTA in Header
-A quick "Resume" button sits to the right of the nav pill, also color-inverting with the section. Downloads `BUHAWIE_SANTOS_RESUME.pdf`. Now uses `.comic-btn` with `.comic-icon` on the `<FileDown>` icon and `.comic-text` on the "Resume" label for spring press feedback.
+#### Mobile Drawer — NEW
+
+Full-screen overlay + right-side slide-in panel.
+
+**Overlay:** `fixed inset-0 z-[499]` — `bg-editor-primary/60 backdrop-blur-sm`. Click closes the drawer.
+
+**Panel:** `absolute top-0 right-0 h-full w-72 max-w-[85vw] bg-editor-primary`. Animates via `translate-x-0` (open) ↔ `translate-x-full` (closed) with `duration-500 ease-in-out`.
+
+**Panel structure:**
+
+| Region | Content |
+| :--- | :--- |
+| Header row | `font-bebas` "Navigation" label + `<X>` close button |
+| Nav links | Full-width links with icon badge + active dot indicator |
+| Footer | Resume download CTA pinned with `border-t` separator |
+
+**Nav link active styles:**
+- Active: `bg-editor-surface/20 border-editor-surface/40 text-editor-bg` + icon badge `bg-editor-accent text-editor-bg` + glowing dot
+- Idle: transparent border → `hover:bg-editor-surface/10 hover:border-editor-surface/20` + icon badge `bg-editor-surface/10`
+
+Each nav link and the resume CTA call `setMobileMenuOpen(false)` on click.
+
+**Accessibility:** `aria-hidden` on overlay when closed, `aria-label` on all buttons, `focus-visible:ring-2 focus-visible:ring-editor-accent` on all interactive elements.
+
+#### Scroll Detection (unchanged)
+
+```ts
+const sections    = ['home', 'about', 'experience', 'projects', 'contacts'];
+const darkSections = ['about', 'experience', 'contacts'];
+// headerOffset = 120px
+```
 
 ---
 
@@ -728,6 +764,7 @@ All assets in `public/` are served at the root URL path.
 
 | Asset Path | URL | Notes |
 | :--- | :--- | :--- |
+| `app/icon.png` | `/icon.png` | Site favicon — `dark.png` logo copy. Next.js App Router auto-serves `app/icon.png` as the favicon. Replaces the old `favicon.ico`. |
 | `public/BUHAWIE_SANTOS_RESUME.pdf` | `/BUHAWIE_SANTOS_RESUME.pdf` | Primary resume download — used by Hero CTA & Header button |
 | `public/resume.pdf` | `/resume.pdf` | Legacy/secondary resume file |
 | `public/editor_logo/buwie_pic.jpg` | `/editor_logo/buwie_pic.jpg` | Portrait photo in About section |
