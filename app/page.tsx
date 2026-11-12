@@ -30,13 +30,49 @@ export default function Home() {
   const [clientSubject, setClientSubject] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [activeDiscipline, setActiveDiscipline] = useState<'frontend' | 'video' | 'uiux'>('frontend');
+
+  const disciplines = {
+    frontend: {
+      id: 'frontend',
+      label: 'Frontend',
+      title: 'Frontend Engineering & Architecture',
+      tagline: 'Component hierarchies, asynchronous state, and clean web deployments',
+      icon: <Code2 className="w-4 h-4 sm:w-5 sm:h-5" />,
+      whatIDid: 'Engineered responsive single-page applications and web portals connected to RESTful APIs. Built cached state management with TanStack Query, structured SRS/DFD specifications, and designed component design systems.',
+      whatIUsed: ['React', 'Next.js', 'Tailwind CSS', 'TypeScript', 'JavaScript (ES6+)', 'TanStack Query', 'REST APIs', 'Supabase', 'Vercel'],
+      badge: 'PROD_BUILD // 2026',
+    },
+    video: {
+      id: 'video',
+      label: 'Video Edit',
+      title: 'Cinematography & Same-Day-Edits (SDE)',
+      tagline: 'Emotional pacing, narrative audio cuts, and film-look color mastering',
+      icon: <Film className="w-4 h-4 sm:w-5 sm:h-5" />,
+      whatIDid: 'Directed and edited high-pressure wedding Same-Day-Edits (SDEs), event teasers, and music videos under rapid same-day deadlines. Engineered emotional narrative audio cuts synced with cinematic score arrangements and color grading.',
+      whatIUsed: ['Premiere Pro', 'DaVinci Resolve', 'After Effects', 'Color Grading (LUTs)', 'Audio Mastering', 'Same-Day-Edits (SDE)', 'Multi-Cam Editing'],
+      badge: 'REC ● 4K 24FPS',
+    },
+    uiux: {
+      id: 'uiux',
+      label: 'UI / UX',
+      title: 'UI/UX & Product Design Systems',
+      tagline: 'Figma prototypes, design tokens, and human-centered design',
+      icon: <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />,
+      whatIDid: 'Led end-to-end interface design in Figma and Adobe XD for university administrative platforms and municipal records systems. Produced high-fidelity interactive wireframes, component design systems, and conducted usability audits.',
+      whatIUsed: ['Figma', 'Adobe XD', 'Adobe Illustrator', 'Wireframing', 'Design Systems', 'Miro', 'Lucidchart', 'Elementor', 'SEO Audits'],
+      badge: 'FIGMA // AUTO-LAYOUT',
+    },
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSending(true);
     setStatusMessage('');
 
-    const result = await handleSendEmail(clientEmail, clientSubject);
+    const form = e.currentTarget as HTMLFormElement;
+    const website = new FormData(form).get('website')?.toString() ?? '';
+    const result = await handleSendEmail(clientEmail, clientSubject, website);
     
     setIsSending(false);
 
@@ -436,66 +472,69 @@ export default function Home() {
       {/* ================================================================ */}
       <section 
         id="home" 
-        className="relative w-full min-h-screen px-4 sm:px-8 py-12 sm:py-16 pt-32 sm:pt-40 flex flex-col justify-between items-center text-editor-primary max-w-7xl mx-auto border-b border-editor-border/40"
+        className="relative w-full min-h-screen pt-28 sm:pt-36 pb-6 sm:pb-10 flex flex-col justify-between items-center text-editor-primary border-b border-editor-border/40 overflow-hidden"
       >
-        {/* Editorial Masthead Top Row */}
-        <div className="w-full flex items-center justify-between border-b border-editor-primary/15 pb-4 mb-6 sm:mb-10 text-xs text-editor-accent uppercase tracking-widest font-medium">
-          <span className="font-times-new italic">Vol. 2026 · Issue No. 01</span>
-          <span className="hidden sm:inline font-times-new italic">Frontend Engineering & Cinematography</span>
-          <span className="font-semibold text-editor-primary">Philippines</span>
-        </div>
+        {/* Core Hero Editorial Container */}
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 flex flex-col justify-between items-center flex-1 z-10">
+          {/* Editorial Masthead Top Row */}
+          <div className="w-full flex items-center justify-between border-b border-editor-primary/15 pb-4 mb-6 sm:mb-10 text-xs text-editor-accent uppercase tracking-widest font-medium">
+            <span className="font-times-new italic">Vol. 2026 · Issue No. 01</span>
+            <span className="hidden sm:inline font-times-new italic">Frontend Engineering & Cinematography</span>
+            <span className="font-semibold text-editor-primary">Philippines</span>
+          </div>
 
-        {/* Hero Core Layout */}
-        <div className="w-full z-10 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 sm:gap-12 my-auto">
-          
-          {/* Left Column: Typographic Masthead */}
-          <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-3 sm:gap-4 max-w-3xl">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-none text-editor-primary">
-              Buhawie Santos
-            </h1>
+          {/* Hero Core Layout */}
+          <div className="w-full z-10 flex flex-col lg:flex-row items-center lg:items-end justify-between gap-8 sm:gap-12 my-auto">
             
-            <p className="text-xs sm:text-sm md:text-base text-editor-primary/80 font-medium tracking-wide max-w-xl leading-relaxed">
-              Frontend Web Developer crafting responsive React & Next.js applications, paired with professional event cinematography and same-day-edit (SDE) filmmaking.
-            </p>
+            {/* Left Column: Typographic Masthead */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-3 sm:gap-4 max-w-3xl">
+              <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-none text-editor-primary">
+                Buhawie Santos
+              </h1>
+              
+              <p className="text-xs sm:text-sm md:text-base text-editor-primary/80 font-medium tracking-wide max-w-xl leading-relaxed">
+                Frontend Web Developer crafting responsive React & Next.js applications, paired with professional event cinematography and same-day-edit (SDE) filmmaking.
+              </p>
 
-            {/* Social Channels */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
-              {contacts.map((contact) => (
-                <Link 
-                  href={contact.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  key={contact.id} 
-                  className="comic-pill group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-editor-surface/20 border border-editor-surface/40 hover:bg-editor-surface/40 hover:border-editor-accent/50 shadow-xs"
-                >
-                  <Image src={contact.icon} alt={contact.platform} width={20} height={20} priority className="comic-icon w-4 h-4 sm:w-5 sm:h-5 object-contain" />
-                  <span className="comic-text text-xs font-bold text-editor-primary">{contact.platform}</span>
-                </Link>
-              ))}
+              {/* Social Channels */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
+                {contacts.map((contact) => (
+                  <Link 
+                    href={contact.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    key={contact.id} 
+                    className="comic-pill group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-editor-surface/20 border border-editor-surface/40 hover:bg-editor-surface/40 hover:border-editor-accent/50 shadow-xs"
+                  >
+                    <Image src={contact.icon} alt={contact.platform} width={20} height={20} priority className="comic-icon w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+                    <span className="comic-text text-xs font-bold text-editor-primary">{contact.platform}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Right Column: Tactile CTAs */}
-          <div className="flex flex-row items-center gap-3 w-full sm:w-auto shrink-0 justify-center lg:justify-end">
-            <Link href="#contacts" className="flex-1 sm:flex-initial">
-              <button className="comic-btn group w-full sm:w-auto bg-editor-primary text-editor-bg border border-editor-primary px-6 py-3.5 rounded-xl font-bold cursor-pointer hover:bg-editor-accent hover:border-editor-accent text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-md">
-                <span className="comic-text">Start a Project</span>
-                <Send className="comic-icon w-3.5 h-3.5" />
-              </button>
-            </Link>
-            
-            <Link href="#projects" className="flex-1 sm:flex-initial">
-              <button className="comic-btn group w-full sm:w-auto cursor-pointer border border-editor-primary/40 bg-editor-surface/20 px-6 py-3.5 rounded-xl text-editor-primary font-bold hover:bg-editor-primary hover:text-editor-bg text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 shadow-xs">
-                <span className="comic-text">Browse Work</span>
-                <ArrowUpRight className="comic-icon w-4 h-4" />
-              </button>
-            </Link>
-          </div>
+            {/* Right Column: Tactile CTAs */}
+            <div className="flex flex-row items-center gap-3 w-full sm:w-auto shrink-0 justify-center lg:justify-end">
+              <Link href="#contacts" className="flex-1 sm:flex-initial">
+                <button className="comic-btn group w-full sm:w-auto bg-editor-primary text-editor-bg border border-editor-primary px-6 py-3.5 rounded-xl font-bold cursor-pointer hover:bg-editor-accent hover:border-editor-accent text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-md">
+                  <span className="comic-text">Start a Project</span>
+                  <Send className="comic-icon w-3.5 h-3.5" />
+                </button>
+              </Link>
+              
+              <Link href="#projects" className="flex-1 sm:flex-initial">
+                <button className="comic-btn group w-full sm:w-auto cursor-pointer border border-editor-primary/40 bg-editor-surface/20 px-6 py-3.5 rounded-xl text-editor-primary font-bold hover:bg-editor-primary hover:text-editor-bg text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 shadow-xs">
+                  <span className="comic-text">Browse Work</span>
+                  <ArrowUpRight className="comic-icon w-4 h-4" />
+                </button>
+              </Link>
+            </div>
 
+          </div>
         </div>
         
-        {/* Film Slate Reel Marquee */}
-        <div className="mt-10 sm:mt-14 w-full relative z-10 border-t border-editor-primary/10 pt-4">
+        {/* Full-bleed Tilted Maximalist Comic Carousel across 100% of Screen Width */}
+        <div className="w-full relative mt-8 sm:mt-12 z-10 overflow-hidden pointer-events-none select-none">
           <TestimonialCarousel items={heroReelProjects} speed="normal" />
         </div>
         
@@ -506,9 +545,10 @@ export default function Home() {
       {/* ================================================================ */}
       <section 
         id="about" 
-        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center border-b border-editor-surface/20 scroll-mt-20 sm:scroll-mt-28"
+        className="relative py-16 sm:py-24 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center border-b border-editor-surface/20 scroll-mt-20 sm:scroll-mt-28 overflow-hidden"
       >
-        <div className="w-full max-w-5xl flex flex-col items-center gap-12 sm:gap-16 z-10">
+        {/* Top Bio Container: Centered max-w-5xl */}
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 flex flex-col items-center gap-10 sm:gap-14 z-10">
           
           {/* Section Heading */}
           <div className="flex flex-col items-center text-center gap-2">
@@ -517,70 +557,324 @@ export default function Home() {
             </h2>
           </div>
 
-          {/* Bio Frame: Analog Darkroom Portrait + Editorial Story — unboxed, direct on canvas */}
-          <div className="w-full flex flex-col md:flex-row justify-center items-center md:items-start gap-10 sm:gap-16">
+          {/* Bio Frame: Analog Darkroom Portrait + Punchy One-Paragraph Editorial Summary */}
+          <div className="w-full flex flex-col md:flex-row justify-center items-center md:items-start gap-8 sm:gap-12">
             
-            {/* Darkroom Portrait */}
+            {/* Darkroom Portrait with Comic Cel Border */}
             <div className="relative group shrink-0">
-              <Image 
-                src="/editor_logo/buwie_pic.jpg" 
-                alt="Buhawie Santos" 
-                width={240} 
-                height={240} 
-                loading="lazy" 
-                className="w-40 h-40 sm:w-52 sm:h-52 rounded-xl object-cover grayscale-20 contrast-105 group-hover:grayscale-0 transition-all duration-500" 
-              />
-              <div className="mt-2.5 text-center">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-editor-surface/80">
-                  SAN PEDRO, PH · 2026
+              <div className="relative w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 rounded-2xl overflow-hidden border-[3px] border-editor-surface shadow-[6px_6px_0px_#8B6F4E] -rotate-2 group-hover:rotate-0 transition-transform duration-300">
+                <Image 
+                  src="/editor_logo/buwie_pic.jpg" 
+                  alt="Buhawie Santos" 
+                  fill 
+                  sizes="224px" 
+                  className="object-cover grayscale-15 contrast-105 group-hover:grayscale-0 transition-all duration-500" 
+                />
+              </div>
+              <div className="mt-3 text-center">
+                <span className="inline-block bg-editor-primary px-3 py-1 rounded-md border border-editor-surface/30 font-bebas text-xs sm:text-sm tracking-widest text-editor-surface shadow-xs">
+                  RIZAL, PH · VOL. 2026
                 </span>
               </div>
             </div>
 
-            {/* Narrative Story */}
-            <div className="flex flex-col gap-4 text-center md:text-left text-xs sm:text-sm md:text-base leading-relaxed text-editor-bg/90">
-              <p>
-                I am <span className="font-bold text-editor-surface">Buhawie Santos</span> (friends and collaborators call me <span className="font-bold text-editor-surface">Buwie</span>). I am an Information Technology student and web developer based in the Philippines, working where structured engineering meets visual storytelling.
-              </p>
-              
-              <p>
-                On the code side, I build responsive, production-ready web applications using <strong className="text-editor-bg font-semibold">React, Next.js, Tailwind CSS, and Python/Node.js</strong>. I enjoy crafting clean layouts, architecting maintainable component hierarchies, and implementing accessible interactions with state management like TanStack Query.
-              </p>
-
-              <p>
-                In cinematography and post-production, I direct and edit <strong className="text-editor-bg font-semibold">Same-Day-Edits (SDEs), wedding films, and debut teasers</strong>. Pacing, audio cutting, and color grading dictate the emotional impact of every cut—disciplines that directly inform how I design intuitive, rhythm-driven user experiences.
-              </p>
-
-              {/* Pillar List — editorial typographic columns, no boxes */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 pt-4 text-left border-t border-editor-surface/20">
-                <div className="py-4 sm:pr-6 sm:border-r border-editor-surface/15">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
-                    <Code2 className="w-4 h-4 shrink-0" />
-                    <span className="text-xs font-bold uppercase tracking-wider">Frontend</span>
-                  </div>
-                  <p className="text-[11px] text-editor-bg/70">React, Next.js, Tailwind, TypeScript, SCSS</p>
-                </div>
-
-                <div className="py-4 sm:px-6 sm:border-r border-editor-surface/15 border-t sm:border-t-0 border-editor-surface/15">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
-                    <Film className="w-4 h-4 shrink-0" />
-                    <span className="text-xs font-bold uppercase tracking-wider">Video Edit</span>
-                  </div>
-                  <p className="text-[11px] text-editor-bg/70">Wedding SDEs, Premiere Pro, Color Grading</p>
-                </div>
-
-                <div className="py-4 sm:pl-6 border-t sm:border-t-0 border-editor-surface/15">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
-                    <Sparkles className="w-4 h-4 shrink-0" />
-                    <span className="text-xs font-bold uppercase tracking-wider">UI / UX</span>
-                  </div>
-                  <p className="text-[11px] text-editor-bg/70">Figma, Adobe XD, Wireframing, Elementor, SEO</p>
-                </div>
+            {/* Narrative Story: Concise One-Paragraph Summary */}
+            <div className="flex flex-col gap-3 text-center md:text-left justify-center flex-1">
+              <div className="inline-flex items-center justify-center md:justify-start">
+                <span className="font-bebas text-xs sm:text-sm tracking-widest uppercase px-2.5 py-0.5 rounded-md bg-editor-surface text-editor-primary font-bold shadow-[2px_2px_0px_#2A1F14]">
+                  CREATIVE PROFILE
+                </span>
               </div>
 
+              <p className="text-sm sm:text-base md:text-lg leading-relaxed text-editor-bg/95 font-medium">
+                I am <strong className="text-editor-surface font-bold">Buhawie &ldquo;Buwie&rdquo; Santos</strong>—an Information Technology graduate and event cinematographer based in Rizal, Philippines. I specialize in the user experience side of frontend engineering and UI/UX design, crafting human-centered, responsive interfaces with <strong className="text-editor-surface font-semibold">React, Next.js, and Figma</strong>. Blending design systems and accessible frontend architecture with the rhythmic storytelling of <strong className="text-editor-surface font-semibold">Same-Day-Edit (SDE) wedding films</strong>, I create intuitive digital products and cinematic visuals that feel intentional, tactile, and alive.
+              </p>
             </div>
 
           </div>
+
+        </div>
+
+        {/* FULL SCREEN WIDTH: Interactive Disciplines Showcase (FRONTEND, VIDEO EDIT, UI / UX) */}
+        <div className="w-full relative my-12 sm:my-16 z-10 border-y-[3px] sm:border-y-4 border-editor-surface/40 bg-editor-primary shadow-[0_12px_24px_rgba(0,0,0,0.4)]">
+          {/* Background Comic Halftone Dot Matrix Accent across whole screen */}
+          <div className="absolute inset-0 bg-[radial-gradient(#C9B896_1.5px,transparent_1.5px)] [background-size:22px_22px] opacity-15 pointer-events-none" />
+
+          {/* Top Comic Banner Tape Rule */}
+          <div className="w-full bg-editor-surface text-editor-primary py-3 sm:py-2 border-b-2 border-editor-primary flex items-center justify-center overflow-hidden font-bebas text-xs sm:text-sm tracking-widest uppercase">
+          </div>
+
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-8 sm:py-12 flex flex-col gap-8 z-10 relative">
+            
+            {/* Category Toggle Tabs */}
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full">
+              {(['frontend', 'video', 'uiux'] as const).map((tabKey) => {
+                const tab = disciplines[tabKey];
+                const isActive = activeDiscipline === tabKey;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveDiscipline(tabKey)}
+                    className={`comic-pill group flex items-center gap-2.5 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm cursor-pointer transition-all duration-200 select-none ${
+                      isActive
+                        ? 'bg-editor-surface text-editor-primary border-2 border-editor-primary shadow-[5px_5px_0px_#8B6F4E] -rotate-1 scale-105'
+                        : 'bg-editor-surface/10 text-editor-bg/75 border-2 border-editor-surface/25 hover:border-editor-surface/60 hover:text-editor-bg hover:bg-editor-surface/20'
+                    }`}
+                  >
+                    <span className={isActive ? 'text-editor-primary' : 'text-editor-surface'}>
+                      {tab.icon}
+                    </span>
+                    <span className="font-bebas text-sm sm:text-base tracking-wider uppercase">
+                      {tab.label}
+                    </span>
+                    {isActive && (
+                      <span className="w-2 h-2 rounded-full bg-editor-primary animate-pulse" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Active Category Showcase Panel with Custom Job Highlights */}
+            {(() => {
+              const cur = disciplines[activeDiscipline];
+              return (
+                <div className="w-full rounded-2xl border-2 sm:border-[3px] border-editor-surface shadow-[8px_8px_0px_#8B6F4E] bg-editor-primary/95 p-6 sm:p-8 lg:p-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-14 relative overflow-hidden transition-all duration-300">
+                  
+                  {/* Inner Comic Grid Accent */}
+                  <div className="absolute inset-0 bg-[radial-gradient(#C9B896_1px,transparent_1px)] [background-size:16px_16px] opacity-10 pointer-events-none" />
+
+                  {/* Left Column: What I Did & What I Used */}
+                  <div className="flex-1 flex flex-col gap-4 z-10 w-full text-left">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="font-bebas text-xs sm:text-sm tracking-widest text-editor-primary bg-editor-surface px-2.5 py-0.5 rounded shadow-[2px_2px_0px_#2A1F14] font-bold">
+                        {cur.badge}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bebas tracking-wide text-editor-bg">
+                        {cur.title}
+                      </h3>
+                      <p className="font-times-new italic text-xs sm:text-sm md:text-base text-editor-surface mt-0.5">
+                        {cur.tagline}
+                      </p>
+                    </div>
+
+                    <div className="space-y-1.5 pt-1">
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-editor-surface">
+                        What I Did:
+                      </span>
+                      <p className="text-xs sm:text-sm md:text-base text-editor-bg/85 leading-relaxed">
+                        {cur.whatIDid}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2 pt-2 border-t border-editor-surface/15">
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-editor-surface">
+                        What I Used:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                        {cur.whatIUsed.map((tool) => (
+                          <span 
+                            key={tool}
+                            className="text-[11px] sm:text-xs font-medium px-2.5 py-1 rounded-md bg-editor-surface/15 text-editor-bg border border-editor-surface/25 shadow-2xs"
+                          >
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Visual Props & Highlight Shapes for Each Job */}
+                  <div className="w-full lg:w-5/12 z-10 flex flex-col justify-center shrink-0">
+                    {activeDiscipline === 'frontend' && (
+                      <div className="flex flex-col gap-2.5 w-full bg-editor-primary/95 border-2 border-editor-surface/50 rounded-xl p-3.5 sm:p-5 shadow-[4px_4px_0px_#8B6F4E] relative overflow-hidden">
+                        {/* Browser Bar */}
+                        <div className="flex items-center justify-between pb-2 border-b border-editor-surface/20">
+                          <div className="flex items-center gap-1.5">
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] border border-black/20" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] border border-black/20" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#27C93F] border border-black/20" />
+                          </div>
+                          <div className="px-3 py-0.5 rounded-md bg-editor-surface/15 text-[10px] text-editor-surface font-mono">
+                            https://buwie.dev/frontend
+                          </div>
+                          <div className="text-[10px] font-mono text-editor-surface/60">
+                            SSR
+                          </div>
+                        </div>
+                        
+                        {/* Mockup Wireframe Screen */}
+                        <div className="space-y-2 pt-1 font-mono text-[11px] sm:text-xs text-editor-bg/85">
+                          <div className="flex items-center gap-2 text-editor-surface">
+                            <span className="text-editor-accent font-bold">&lt;ApplicationArchitecture&gt;</span>
+                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-editor-surface/20 text-editor-surface font-semibold">200 OK</span>
+                          </div>
+                          <div className="pl-3 border-l-2 border-editor-surface/30 space-y-1">
+                            <p className="text-editor-bg/90">&lt;<span className="text-editor-surface font-bold">ClientProvider</span> cache=&#123;tanstack&#125; /&gt;</p>
+                            <p className="text-editor-bg/90">&lt;<span className="text-editor-surface font-bold">ModularLayout</span> responsive=&#123;true&#125;&gt;</p>
+                            <p className="pl-3 text-editor-surface/75">// Server-Side Rendered components</p>
+                            <p className="text-editor-bg/90">&lt;/<span className="text-editor-surface font-bold">ModularLayout</span>&gt;</p>
+                          </div>
+                          <div className="text-editor-accent font-bold">&lt;/ApplicationArchitecture&gt;</div>
+                        </div>
+
+                        {/* Floating Comic Stickers */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-editor-surface/15">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-bg text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            npm run build: ✓ 0 errors
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-surface text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            TanStack Query v5
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeDiscipline === 'video' && (
+                      <div className="flex flex-col gap-2.5 w-full bg-editor-primary/95 border-2 border-editor-surface/50 rounded-xl p-3.5 sm:p-5 shadow-[4px_4px_0px_#8B6F4E] relative overflow-hidden">
+                        {/* Film Strip Header with Perforations */}
+                        <div className="flex items-center justify-between gap-1 pb-2 border-b border-editor-surface/20">
+                          <div className="flex gap-1.5">
+                            {[...Array(5)].map((_, i) => (
+                              <div key={i} className="w-2.5 h-3 bg-editor-surface/25 rounded-xs border border-editor-surface/50" />
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-950/70 border border-red-500/50 text-[10px] font-mono text-red-300 font-bold">
+                            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                            <span>REC 00:04:18:22</span>
+                          </div>
+                          <div className="flex gap-1.5">
+                            {[...Array(5)].map((_, i) => (
+                              <div key={i} className="w-2.5 h-3 bg-editor-surface/25 rounded-xs border border-editor-surface/50" />
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Video Timeline & Scissors Trim */}
+                        <div className="py-1 space-y-2">
+                          <div className="flex items-center justify-between text-[10px] font-mono text-editor-surface">
+                            <span>TIMELINE // WEDDING_SDE</span>
+                            <span className="font-bold text-editor-bg">✂️ TRIM [02:45]</span>
+                          </div>
+                          
+                          {/* Visual Clip Blocks with Trim Dashes */}
+                          <div className="flex items-center gap-1.5 h-9 w-full bg-editor-surface/10 rounded-md p-1 border border-editor-surface/25 relative">
+                            <div className="h-full w-4/12 bg-editor-surface/30 rounded flex items-center justify-center text-[9px] font-bold text-editor-bg truncate px-1">
+                              PREP_SHOTS
+                            </div>
+                            <div className="h-full border-r-2 border-dashed border-red-400/90 relative">
+                              <span className="absolute -top-3.5 -left-2 text-[11px]">✂️</span>
+                            </div>
+                            <div className="h-full w-5/12 bg-editor-accent/50 rounded flex items-center justify-center text-[9px] font-bold text-editor-bg truncate px-1">
+                              VOWS_AUDIO
+                            </div>
+                            <div className="h-full w-3/12 bg-editor-surface/25 rounded flex items-center justify-center text-[9px] font-bold text-editor-bg truncate px-1">
+                              OUTRO_SDE
+                            </div>
+                          </div>
+
+                          {/* Audio Waveform Simulation */}
+                          <div className="flex items-end gap-1 h-5 w-full pt-1 px-1">
+                            {[40, 70, 95, 60, 35, 85, 100, 75, 45, 95, 60, 80, 50, 70, 90, 65, 40, 85, 100, 45].map((h, i) => (
+                              <div 
+                                key={i} 
+                                className="flex-1 bg-editor-surface/45 rounded-t-xs"
+                                style={{ height: `${h}%` }}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Floating Comic Stickers */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-editor-surface/15">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-bg text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            LUT: ANALOG WARM CINEMA
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-surface text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            4K DCI · 24.00 FPS
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {activeDiscipline === 'uiux' && (
+                      <div className="flex flex-col gap-2.5 w-full bg-editor-primary/95 border-2 border-editor-surface/50 rounded-xl p-3.5 sm:p-5 shadow-[4px_4px_0px_#8B6F4E] relative overflow-hidden">
+                        {/* Figma / Canvas Header */}
+                        <div className="flex items-center justify-between pb-2 border-b border-editor-surface/20">
+                          <div className="flex items-center gap-1.5 text-editor-surface text-[11px] font-bold">
+                            <span>✏️</span>
+                            <span className="font-mono text-[10px]">FIGMA CANVAS · 8px GRID</span>
+                          </div>
+                          <div className="px-2 py-0.5 rounded bg-editor-surface/15 text-[10px] text-editor-surface font-mono">
+                            1440 × 900
+                          </div>
+                          <div className="text-[10px] font-mono text-editor-surface/60">
+                            100%
+                          </div>
+                        </div>
+
+                        {/* Wireframe Mockup Blueprint */}
+                        <div className="py-1 space-y-2">
+                          {/* Wireframe Topbar */}
+                          <div className="flex items-center justify-between p-1.5 border border-dashed border-editor-surface/35 rounded bg-editor-surface/5">
+                            <div className="w-10 h-2 bg-editor-surface/35 rounded-xs" />
+                            <div className="flex gap-2">
+                              <div className="w-6 h-2 bg-editor-surface/25 rounded-xs" />
+                              <div className="w-6 h-2 bg-editor-surface/25 rounded-xs" />
+                              <div className="w-6 h-2 bg-editor-surface/25 rounded-xs" />
+                            </div>
+                          </div>
+
+                          {/* Wireframe Hero Split */}
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="p-2 border border-dashed border-editor-surface/35 rounded bg-editor-surface/5 space-y-1.5">
+                              <div className="w-3/4 h-3 bg-editor-surface/45 rounded-xs" />
+                              <div className="w-full h-1.5 bg-editor-surface/25 rounded-xs" />
+                              <div className="w-2/3 h-1.5 bg-editor-surface/25 rounded-xs" />
+                              <div className="w-12 h-3.5 bg-editor-surface/35 rounded-xs mt-1" />
+                            </div>
+                            <div className="p-2 border border-dashed border-editor-surface/35 rounded bg-editor-surface/5 flex items-center justify-center relative min-h-[56px]">
+                              <div className="text-editor-surface/40 text-[9px] font-mono">
+                                [ WIREFRAME FRAME ]
+                              </div>
+                              {/* Vector Pen Tool Cursor Overlay */}
+                              <div className="absolute bottom-1 right-2 flex items-center gap-1 text-[10px] bg-editor-bg text-editor-primary px-1.5 py-0.5 rounded shadow-[1px_1px_0px_#2A1F14] font-bold">
+                                <span>✒️</span>
+                                <span className="text-[9px] font-mono">Vector Pen</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Floating Comic Stickers */}
+                        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-editor-surface/15">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-bg text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            AUTO-LAYOUT: PADDING 24px
+                          </span>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-editor-surface text-editor-primary border border-editor-primary shadow-[1px_1px_0px_#2A1F14]">
+                            ACCESSIBILITY WCAG AAA
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              );
+            })()}
+
+          </div>
+
+          {/* Bottom Comic Bar Tape Rule */}
+          <div className="w-full bg-editor-surface/20 text-editor-surface py-3 border-t-2 border-editor-surface/30 flex items-center justify-center overflow-hidden font-bebas text-[11px] sm:text-xs tracking-widest uppercase">
+          </div>
+        </div>
+
+        {/* Bottom Container: Tech Stack (Centered max-w-5xl) */}
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-8 flex flex-col items-center gap-12 z-10">
 
           {/* Tech Stack — open directory grid with comic distorted logo popups */}
           <div className="w-full flex flex-col gap-6">
@@ -933,6 +1227,16 @@ export default function Home() {
           {/* Right Column: Contact Form */}
           <div className="lg:w-6/12 flex flex-col justify-center w-full">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+              <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+                <label htmlFor="contact-website">Leave this field empty</label>
+                <input
+                  id="contact-website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="client-email" className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-editor-surface">
                   Your Email Address

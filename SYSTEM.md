@@ -92,7 +92,7 @@ editor-portfolio/
 ├── app/
 │   ├── actions.ts          # Next.js Server Action — Resend email handler
 │   ├── favicon.ico         # Site favicon
-│   ├── globals.css         # Global styles, Tailwind @theme tokens, CSS animations, comic utility classes
+│   ├── globals.css         # Global styles, Tailwind @theme tokens, CSS animations, comic utility classes, comic distort bubble system
 │   ├── layout.tsx          # Root layout: font loading, metadata, Header, Footer
 │   └── page.tsx            # Main page — all sections rendered here (single page)
 ├── api/
@@ -101,7 +101,7 @@ editor-portfolio/
 │   ├── Carousel.tsx            # Interactive 3-up carousel for project cards
 │   ├── Header.tsx              # Fixed floating nav with section-aware color inversion
 │   ├── ProjectReelCard.tsx     # Lightweight image+title card used in the hero marquee reel ⭐ NEW
-│   ├── TestimonialCarousel.tsx # Auto-scrolling horizontal marquee reel
+│   ├── TestimonialCarousel.tsx # Tilted maximalist comic film reel (3-layer: ticker + cards + ticker)
 │   ├── VideoCard.tsx           # YouTube embed card with lazy-loading thumbnail facade
 │   └── WebsiteCard.tsx         # Web project card with mockup image, tags, and live link
 ├── public/
@@ -272,7 +272,7 @@ Two `<Image>` components are stacked absolutely on top of each other:
 - `dark_nobg.png` — visible on **light** sections (`opacity-100` when `!isDarkSection`)
 - `light_nobg.png` — visible on **dark** sections (`opacity-100` when `isDarkSection`)
 
-Transitions use `transition-opacity duration-500 ease-in-out`.
+Transitions use `transition-opacity duration-500 ease-in-out`. The logo `<Link>` wrapper now uses `.comic-pill` for a tilt-on-hover spring effect.
 
 #### Scroll Detection
 
@@ -308,7 +308,7 @@ Nav items use a custom CSS animation (`comicIconPop` + `comicWordPop`) defined i
 An underline pill (`h-0.5 w-3/4 rounded-full`) renders absolutely below the active nav item, colored to match the current section theme, with a soft glow `box-shadow`.
 
 #### Resume CTA in Header
-A quick "Resume" button sits to the right of the nav pill, also color-inverting with the section. Downloads `BUHAWIE_SANTOS_RESUME.pdf`.
+A quick "Resume" button sits to the right of the nav pill, also color-inverting with the section. Downloads `BUHAWIE_SANTOS_RESUME.pdf`. Now uses `.comic-btn` with `.comic-icon` on the `<FileDown>` icon and `.comic-text` on the "Resume" label for spring press feedback.
 
 ---
 
@@ -344,7 +344,7 @@ A **3-up fan carousel** (center card full size, left/right cards dimmed and scal
 
 Clicking a side card sets it as active. Left/right arrow buttons also navigate. Keyboard: `ArrowLeft` / `ArrowRight` on the focused section element.
 
-**Slide Indicators:** Dot pills below the carousel — active dot expands horizontally (`w-7 sm:w-9`) in `bg-editor-accent`.
+**Slide Indicators:** Dot pills below the carousel — active dot expands horizontally (`w-7 sm:w-9`) in `bg-editor-accent`. Inactive dots use spring easing: `transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]` with `hover:scale-125 active:scale-90`.
 
 **Container height:** `h-[260px] sm:h-[360px] md:h-[440px] lg:h-[480px]`  
 **Card dimensions:** `w-[92%] sm:w-[85%] md:w-[700px] max-w-[760px] aspect-video`
@@ -354,6 +354,7 @@ Clicking a side card sets it as active. Left/right arrow buttons also navigate. 
 - `tabIndex={0}` on section with keyboard handler
 - `focus-visible:ring-2 focus-visible:ring-editor-accent` on nav buttons
 - `aria-label` on each nav button ("Previous project" / "Next project" / "Go to slide N")
+- Arrow buttons now use `.comic-btn group` + `.comic-icon` on the arrow icons for spring hover feedback
 
 ---
 
@@ -376,30 +377,49 @@ interface TestimonialCarouselProps {
 }
 ```
 
-#### Behavior
+#### Behavior — Maximalist Comic Film Reel
 
-A **horizontal auto-scrolling marquee** (infinite loop). Items are **duplicated** internally to create the seamless loop effect. Pauses on `group-hover` via `[animation-play-state:paused]`.
+The marquee has been redesigned from a plain horizontal scroller into a **tilted maximalist comic film reel** with three layers:
 
-**Speed durations (CSS animation):**
+**Structure:**
+```
+[ Top Ticker Ribbon    ] ← scrolls RIGHT-TO-LEFT (marqueeReverse)
+[ Center Card Track    ] ← scrolls LEFT (marquee), main project cards
+[ Bottom Ticker Ribbon ] ← scrolls LEFT (marquee)
+```
+
+**Tilt:** The entire outer container is rotated `-2deg` / `sm:-rotate-[2.5deg]` and scaled `scale-[1.03]` using `w-[115vw] -ml-[7.5vw]` to bleed edge-to-edge beyond the viewport.
+
+**Ticker ribbons:**
+- Top: `font-bebas` text in `text-editor-surface` on `bg-editor-primary` — editorial archive text (`★ BUWIE CREATIVE ARCHIVE ★ FRONTEND ENGINEERING...`). Scrolls reverse direction via `marqueeReverse`.
+- Bottom: `font-bebas` bold text in `text-editor-primary` on `bg-editor-surface/30` — tech stack text (`★ REACT ★ NEXT.JS ★ TAILWIND CSS...`). Scrolls normal direction.
+- Both ticker texts repeated 4× in a single `w-max` strip for seamless looping (no JS duplication).
+
+**Center card track:**
+- Wrapper has `pointer-events-none select-none` — the reel is decorative; navigation happens through `ProjectReelCard`'s internal links.
+- Alternating card tilt: `[&:nth-child(even)]:-rotate-1 [&:nth-child(odd)]:rotate-1` for a hand-stacked film slate look.
+- Items still duplicated 2× for seamless loop.
+- Edge fades: `from-editor-bg via-editor-bg/80 to-transparent` at `w-16 sm:w-32`.
+
+**Speed durations:**
 
 | Speed | Duration |
 | :--- | :--- |
-| `fast` | 22s linear infinite |
+| `fast` | 25s linear infinite |
 | `normal` | 45s linear infinite |
-| `slow` | 70s linear infinite |
+| `slow` | 65s linear infinite |
 
-Animation defined inline via `<style jsx global>` with `@keyframes marquee` (translateX 0% → -50%).
+**Two keyframes defined inline via `<style jsx global>`:**
+- `marquee`: `translateX(0% → -50%)`
+- `marqueeReverse`: `translateX(-50% → 0%)`
 
-**Edge fade:** Left and right gradient overlays (`from-editor-bg to-transparent`) blend card edges into the section background.
-
-**Card size:** `w-[180px] sm:w-[240px] md:w-[280px] lg:w-[320px] aspect-video`
+**Card size:** `w-[260px] sm:w-[320px] md:w-[380px] lg:w-[420px] aspect-video` (larger than before).
 
 **Usage in page.tsx:**
 ```tsx
-// combinedProjects = [...websiteProjects, ...videoProjects]
-<TestimonialCarousel items={combinedProjects} speed="normal" />
+<TestimonialCarousel items={heroReelProjects} speed="normal" />
 ```
-Rendered at the bottom of the Hero section as a "Film Slates & Deployments" reel.
+The hero section wrapper has `overflow-hidden pointer-events-none select-none`.
 
 ---
 
@@ -482,30 +502,34 @@ interface VideoCardProps {
 
 **Path:** `components/ProjectReelCard.tsx`  
 **Type:** `'use client'` — Client Component  
-**Wrapper:** `<Link>` — clicking the card scrolls the user to the target section.  
-**Purpose:** Lightweight minimal card used exclusively inside the `TestimonialCarousel` hero marquee reel. Intentionally simpler than `WebsiteCard`/`VideoCard` — only shows a poster image, category pill, and project title.
+**Wrapper:** `<div>` (non-interactive) — the card itself has `pointer-events-none`. Navigation happens at the `TestimonialCarousel` wrapper level.  
+**Purpose:** Thumbnail card exclusively used inside the `TestimonialCarousel` hero marquee reel. Redesigned from a linked card into a pure visual film-slate display piece.
 
 #### Props
 
 ```ts
 interface ProjectReelCardProps {
-  title: string;         // Project name shown at the bottom
-  category: string;      // Badge label shown at the top (e.g., "Wedding SDE")
-  imageSrc: string;      // Local path (e.g., "/websites/oasis.png") or remote URL (YouTube thumbnail)
-  targetHref?: string;   // Anchor to navigate to on click (default: "#projects")
+  title: string;         // Project name displayed in Bebas Neue at the bottom
+  category: string;      // Badge label at the top-left corner
+  imageSrc: string;      // Local path or remote YouTube thumbnail URL
+  targetHref?: string;   // Accepted in props but no longer used — kept for API compatibility
 }
 ```
 
-#### Visual Layers (bottom to top)
+> **Note:** `targetHref` is still in the prop interface but is no longer applied to any element. The reel wrapper (`TestimonialCarousel`) handles `pointer-events-none` for the whole track. If interactive reel cards are needed in future, re-add `<Link href={targetHref}>` as the outer wrapper.
 
-1. **Full-bleed poster image** (`z-0`): `object-cover object-center`, scales on `group-hover:scale-108`. `unoptimized` is set automatically when `imageSrc` starts with `http` (remote YouTube thumbnails).
-2. **Editorial vignette gradient** (`z-[1]`): `from-editor-primary via-editor-primary/55 to-editor-primary/25`.
-3. **Content** (`z-10`): top-left `category` badge pill (`.comic-pill`) + bottom `title` text (`.comic-text`).
+#### Visual Design
 
-#### Design Notes
-- Uses `.comic-pill` on the category badge and `.comic-text` on the title for consistent spring motion.
-- `border-editor-accent/70` on hover border — slightly warmer than the default `border-editor-surface/30`.
-- Intentionally has **no description, no tech tags, no live link indicator** — purely a teaser thumbnail that drives clicks to the full carousel sections.
+Redesigned with a **comic-sticker / film-slate aesthetic** — no longer uses the `comic-pill` / `comic-text` utility classes:
+
+1. **Border:** `border-[3px] border-editor-primary` — solid heavy border instead of hairline.
+2. **Drop shadow:** `shadow-[6px_6px_0px_#2A1F14] sm:shadow-[8px_8px_0px_#2A1F14]` — hard-offset comic shadow, not a diffuse blur.
+3. **Poster image** (`z-0`): `object-cover object-center`. No hover scale (reel is non-interactive). `unoptimized` when `imageSrc` starts with `http`.
+4. **Gradient** (`z-[1]`): `from-editor-primary/95 via-editor-primary/45 to-transparent` — heavier bottom fade than before.
+5. **Top content** (`z-10`):
+   - Left: Category pill styled as a **comic sticker** — `bg-editor-bg border-2 border-editor-primary text-editor-primary shadow-[2px_2px_0px_#2A1F14] rounded-md` — solid, opaque, punchy.
+   - Right: Slate tag in `font-bebas text-editor-surface` — `CUT // 2026` text, always static.
+6. **Bottom content** (`z-10`): Title in `font-bebas text-xl sm:text-2xl md:text-3xl text-editor-bg` — Bebas Neue display instead of Poppins bold. `drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]` for legibility over dark images.
 
 ---
 
@@ -545,54 +569,156 @@ This is the **entire single-page portfolio**. It is one large component (`Home`)
 | `clientSubject` | `string` | Controlled input — message subject |
 | `isSending` | `boolean` | Disables submit button while email is in flight |
 | `statusMessage` | `string` | Success/error feedback shown below the form |
+| `activeDiscipline` | `'frontend' \| 'video' \| 'uiux'` | **NEW** — tracks the active tab in the Disciplines Showcase panel |
 
 > **Changed from previous version:** `copiedEmail` state and the "Copy Email" button have been removed. The hero section no longer has a clipboard copy shortcut — social links are the primary quick-contact method. `FileDown`, `Check`, `Copy`, `Briefcase`, `Calendar`, `CheckCircle2`, `Sparkles` (some) Lucide icons also removed from imports.
 
+#### `disciplines` Object (NEW)
+
+A `Record<'frontend' | 'video' | 'uiux', DisciplineData>` object powering the **Interactive Disciplines Showcase** in the About section. Each entry has:
+
+```ts
+{
+  id: string;
+  label: string;           // Tab button label
+  title: string;           // Panel heading (Bebas Neue)
+  tagline: string;         // Italic subtitle (Times New Roman MT)
+  icon: ReactNode;         // Lucide icon for tab button
+  whatIDid: string;        // Narrative paragraph
+  whatIUsed: string[];     // Tech tool badges
+  badge: string;           // Comic sticker label (top-left of panel)
+}
+```
+
+| Key | Label | Badge |
+| :--- | :--- | :--- |
+| `frontend` | Frontend | `PROD_BUILD // 2026` |
+| `video` | Video Edit | `REC ● 4K 24FPS` |
+| `uiux` | UI / UX | `FIGMA // AUTO-LAYOUT` |
+
+#### Interactive Disciplines Showcase Panel (NEW — in `#about` section)
+
+A full-screen-width interactive switchboard between the bio block and the Tech Stack grid. Rendered as a full-bleed strip with `border-y-[3px]` and a **radial-gradient halftone dot matrix** background accent (`bg-[radial-gradient(#C9B896_1.5px,transparent_1.5px)]`).
+
+**Structure:**
+1. **Top banner tape rule** — `bg-editor-surface` strip with `font-bebas` text: `⚡ DISCIPLINE ARCHIVE // INTERACTIVE SWITCHBOARD`.
+2. **Tab toggle buttons** — three `.comic-pill` buttons. Active state: `bg-editor-surface text-editor-primary border-2 border-editor-primary shadow-[5px_5px_0px_#8B6F4E] -rotate-1 scale-105` with an `animate-pulse` dot.
+3. **Content panel** — switches via `activeDiscipline` state. Two-column layout:
+   - **Left column:** badge sticker, `h3` title + italic tagline, "What I Did" paragraph, "What I Used" tech badges.
+   - **Right column:** a **custom visual prop** per discipline rendered as a thematic mockup widget:
+     - `frontend` → browser chrome mock with JSX code snippet and "npm run build" stickers.
+     - `video` → film timeline with clip blocks, dashed scissors trim indicator, and SVG audio waveform bars.
+     - `uiux` → Figma canvas with wireframe skeleton blocks and a pen-tool cursor overlay.
+4. **Bottom banner tape rule** — `bg-editor-surface/20` strip with tagline text.
+
+#### About Section — Bio Block Changes
+
+- Portrait now has a **comic cel border**: `border-[3px] border-editor-surface shadow-[6px_6px_0px_#8B6F4E]` with `-rotate-2 group-hover:rotate-0` spring transition.
+- Location label changed from `SAN PEDRO, PH · 2026` to `RIZAL, PH · VOL. 2026`, styled as a solid `font-bebas` badge with `shadow-[2px_2px_0px_#2A1F14]`.
+- Bio copy condensed to a **single punchy paragraph** with a "CREATIVE PROFILE" sticker label above it.
+- Three-pillar column layout (Frontend / Video Edit / UI/UX) **removed** — now replaced by the full Disciplines Showcase panel.
+
 #### Handlers
 
-**`handleSubmit`:** Calls the server action `handleSendEmail(clientEmail, clientSubject)`. Resets form on success, shows error message on failure.
+**`handleSubmit`:** Reads the hidden honeypot `website` field via `FormData`, then calls `handleSendEmail(clientEmail, clientSubject, website)`. Resets form on success, shows error message on failure.
 
 #### Hardcoded Data Arrays (defined inside the component)
 
 - `contacts` — 2 items: LinkedIn, GitHub
+- `skillIcons` — 19-entry icon map (see Section 15)
+- `disciplines` — 3-entry object: `frontend`, `video`, `uiux` (powers the Disciplines Showcase)
 - `skillCategories` — 6 items (see Section 15)
-- `workExperience` — 4 items (see Section 15)
+- `workExperience` — 3 items (see Section 15)
 - `education` — 2 items (see Section 15)
 - `certifications` — 2 items (see Section 15)
 - `videoProjects` — 6 items, each wrapping a `<VideoCard />`
 - `websiteProjects` — 4 items, each wrapping a `<WebsiteCard />`
-- `heroReelProjects` — 10 items, each wrapping a `<ProjectReelCard />` *(new — replaces `combinedProjects`)*
-
-> **Changed from previous version:** The hero marquee now uses `heroReelProjects` (using `ProjectReelCard`) instead of `combinedProjects` (which used raw `WebsiteCard`/`VideoCard` instances). This gives the reel a uniform lightweight thumbnail look optimized for small marquee card sizes.
+- `heroReelProjects` — 10 items, each wrapping a `<ProjectReelCard />`
 
 ---
 
 ## 9. Server Actions & Email Integration
 
-### `app/actions.ts`
+### `api/resend.ts` — REWRITTEN (no longer legacy)
 
-**Type:** Next.js Server Action (`'use server'`)  
-**Library:** `resend` npm package
+**Path:** `api/resend.ts`  
+**Type:** Server-only module (`import 'server-only'`)
+
+Previously a standalone test script that executed on import. Now a proper **exported module** consumed by `app/actions.ts`.
 
 ```ts
-export async function handleSendEmail(clientEmail: string, clientSubject: string)
+export async function sendContactEmail(clientEmail: string, clientSubject: string)
 ```
 
-**Flow:**
-1. Validates both fields are non-empty.
-2. Calls `resend.emails.send(...)` with:
-   - `from`: `'BuwieSit Client <onboarding@resend.dev>'` (Resend sandbox sender)
-   - `to`: `'santosbuhawie28@gmail.com'`
-   - `replyTo`: the visitor's submitted email
-   - `subject`: the visitor's submitted subject
-   - `html`: simple notification template with sender's email and subject
-3. Returns `{ success: true }` or `{ error: string }`.
+**Key additions vs the old file:**
 
-**Environment variable required:** `RESEND_API_KEY` (stored in `.env.local`, never committed).
+| Feature | Detail |
+| :--- | :--- |
+| `import 'server-only'` | Prevents this module from being bundled into client code |
+| `escapeHtml()` helper | Sanitizes `clientEmail` and `clientSubject` before injecting into the HTML email body — prevents HTML injection |
+| API key guard | Returns a graceful error if `RESEND_API_KEY` is missing rather than throwing |
+| `text:` field | Plain-text fallback added alongside `html:` in the Resend payload |
+| Improved subject line | Now prefixes `Portfolio inquiry: ` to the submitted subject |
+| Returns `{ success: Boolean(data?.id) }` | Verifies Resend actually returned a message ID rather than blindly returning `true` |
+| Deferred SDK instantiation | `new Resend(apiKey)` is called inside the function, not at module load time — no SDK instantiation on cold import |
 
-### `api/resend.ts`
+### `app/actions.ts` — UPGRADED
 
-This file is a **legacy test/scratch file**. It is **not used** in any active routing or server action. It fires immediately on import (no export), which makes it a standalone script. Do not import or rely on this file; use `app/actions.ts` instead.
+**Type:** Next.js Server Action (`'use server'`)
+
+Significantly upgraded beyond the original single-call wrapper. Now handles validation, rate limiting, and delegates sending to `sendContactEmail` from `api/resend.ts`.
+
+**New signature:**
+```ts
+export async function handleSendEmail(
+  clientEmail: string,
+  clientSubject: string,
+  website: string        // NEW — honeypot field value
+)
+```
+
+**New features:**
+
+**1. Honeypot bot trap:**
+```ts
+if (typeof website === 'string' && website.trim()) return { success: true };
+```
+If the hidden `website` field is populated (bots fill all fields), silently return success without sending. The bot gets no feedback that the check fired.
+
+**2. Input validation:**
+- Type checks both `clientEmail` and `clientSubject`.
+- Trims whitespace, checks for empty strings.
+- Email format validated via regex: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/` with max length 254 chars.
+- Subject header injection prevented: rejects values containing `\r` or `\n`, max 180 chars.
+
+**3. IP-based rate limiting (in-process):**
+- Window: 15 minutes (`RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000`)
+- Max requests per window: 3 (`RATE_LIMIT_MAX = 3`)
+- Storage: `submissionsByIp` — a module-level `Map<string, number[]>` keyed by IP.
+- IP resolved from `x-forwarded-for` → `x-real-ip` → `'unknown'` via `headers()` from `next/headers`.
+- Expired entries pruned on each request to keep the map bounded.
+- Returns: `{ error: 'Too many messages sent. Please try again in 15 minutes.' }` when exceeded.
+
+**4. Delegates to `sendContactEmail`:**
+```ts
+return await sendContactEmail(email, subject);
+```
+
+### Contact Form — Honeypot Field (in `page.tsx`)
+
+A visually hidden `<input name="website">` is rendered off-screen in the contact form:
+
+```tsx
+<div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+  <label htmlFor="contact-website">Leave this field empty</label>
+  <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+</div>
+```
+
+- `tabIndex={-1}` — keyboard users cannot tab into it.
+- `aria-hidden="true"` on the wrapper — screen readers skip it.
+- `autoComplete="off"` — browsers won't autofill it.
+- Value is read in `handleSubmit` via `new FormData(form).get('website')` and passed as the third argument to `handleSendEmail`.
 
 ---
 
@@ -608,8 +734,26 @@ All assets in `public/` are served at the root URL path.
 | `public/editor_logo/dark_nobg.png` | `/editor_logo/dark_nobg.png` | Logo shown on **light** sections |
 | `public/editor_logo/light_nobg.png` | `/editor_logo/light_nobg.png` | Logo shown on **dark** sections |
 | `public/icons/linkedin.png` | `/icons/linkedin.png` | LinkedIn icon in contacts list |
-| `public/icons/github.png` | `/icons/github.png` | GitHub icon in contacts list |
-| `public/icons/gmail.png` | `/icons/gmail.png` | Gmail icon (available, not currently rendered as `<Image>`) |
+| `public/icons/github.png` | `/icons/github.png` | GitHub icon in contacts / skillIcons |
+| `public/icons/gmail.png` | `/icons/gmail.png` | Gmail icon (available, not currently rendered) |
+| `public/icons/react.webp` | `/icons/react.webp` | React skill icon popup |
+| `public/icons/nextjs.png` | `/icons/nextjs.png` | Next.js skill icon popup |
+| `public/icons/tailwind.webp` | `/icons/tailwind.webp` | Tailwind CSS skill icon popup |
+| `public/icons/sass.png` | `/icons/sass.png` | Sass/SCSS skill icon popup |
+| `public/icons/javascript.png` | `/icons/javascript.png` | JavaScript skill icon popup |
+| `public/icons/python.webp` | `/icons/python.webp` | Python skill icon popup |
+| `public/icons/supabase.png` | `/icons/supabase.png` | Supabase skill icon popup |
+| `public/icons/postgresql.png` | `/icons/postgresql.png` | PostgreSQL skill icon popup |
+| `public/icons/mysql.png` | `/icons/mysql.png` | MySQL skill icon popup |
+| `public/icons/wordpress.png` | `/icons/wordpress.png` | WordPress skill icon popup |
+| `public/icons/elementor.png` | `/icons/elementor.png` | Elementor skill icon popup |
+| `public/icons/git.webp` | `/icons/git.webp` | Git skill icon popup |
+| `public/icons/gitlab.svg` | `/icons/gitlab.svg` | GitLab skill icon popup |
+| `public/icons/figma.svg` | `/icons/figma.svg` | Figma skill icon popup |
+| `public/icons/adobexd.webp` | `/icons/adobexd.webp` | Adobe XD skill icon popup |
+| `public/icons/adobe_illustrator.webp` | `/icons/adobe_illustrator.webp` | Adobe Illustrator skill icon popup |
+| `public/icons/lucidchart.webp` | `/icons/lucidchart.webp` | Lucidchart skill icon popup |
+| `public/icons/miro.svg` | `/icons/miro.svg` | Miro skill icon popup |
 | `public/websites/oasis.png` | `/websites/oasis.png` | OASIS project mockup |
 | `public/websites/tahak.png` | `/websites/tahak.png` | TAHAK project mockup |
 | `public/websites/ibajay.png` | `/websites/ibajay.png` | Ibajay Aklan mockup |
@@ -699,16 +843,44 @@ Four keyframe animations form the Comic Motion System defined in `globals.css`:
 .group:hover .animate-comic-word { animation: comicWordPop 0.45s ... }
 ```
 
-### Tailwind CSS v4 Marquee Animation
+### Comic Distort Bubble System (NEW)
 
-The `TestimonialCarousel` uses an inline `<style jsx global>` block to define:
+Three additional keyframes and a utility class system for the **Tech Stack skill badge logo popups** in the About section:
+
+**`comicDistortPop`** — applied to `.comic-distort-bubble` on group hover:
+- Pops up from below with distortion: starts `scale(0.2) rotate(-16deg) skewX(-10deg)`, overshoots to `scale(1.24, 0.88) rotate(8deg) skewX(6deg)` (squash/stretch asymmetry), settles to `scale(1) rotate(-2deg) skewX(-1deg)`.
+- Duration: `0.4s` spring cubic-bezier.
+
+**`comicIconWobble`** — applied to `.comic-distort-bubble .comic-inner-icon` on group hover:
+- Inner icon rotates from `scale(0.6) rotate(14deg)` → `scale(1.22) rotate(-10deg)` → settles `scale(1) rotate(0deg)`.
+- Duration: `0.42s` spring cubic-bezier.
+
+**`.comic-distort-bubble`** utility class:
+- `display: none` at rest; `display: flex` on `group:hover` / `group:focus-visible`.
+- Positioned `absolute bottom-[calc(100%+8px)] left-1/2 z-40` — appears above the hovered badge.
+- Inner content: `bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]` — solid opaque comic popup with accent offset shadow.
+- Downward speech pointer triangle via CSS borders at `top-full`.
+
+**Reduced motion support:**
 ```css
-@keyframes marquee {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+@media (prefers-reduced-motion: reduce) {
+  .comic-distort-bubble { display: none !important; }
+  .group:hover .comic-distort-bubble {
+    display: flex !important;
+    animation: none !important;
+    transform: translate(-50%, 0) !important;
+  }
 }
 ```
-Applied as: `animate-[marquee_45s_linear_infinite]` (Tailwind v4 arbitrary animation syntax).
+
+### Tailwind CSS v4 Marquee Animation
+
+The `TestimonialCarousel` uses an inline `<style jsx global>` block to define two keyframes:
+```css
+@keyframes marquee        { 0% { translateX(0%)   } 100% { translateX(-50%) } }
+@keyframes marqueeReverse { 0% { translateX(-50%) } 100% { translateX(0%)   } }
+```
+Applied as Tailwind v4 arbitrary animation syntax, e.g. `animate-[marquee_45s_linear_infinite]` and `animate-[marqueeReverse_35s_linear_infinite]`.
 
 ---
 
@@ -745,6 +917,15 @@ For social links, badge pills, and contact row items.
 | `:hover` | `scale(1.06) rotate(-1.5deg) translateY(-1px)` |
 | `:active` | `scale(0.95) rotate(0deg) translateY(0)` |
 
+### `.comic-distort-bubble` + `.comic-inner-icon`
+For the **Tech Stack skill logo popup** in the About section. Applied to a hidden `<div>` inside each skill badge that has an icon mapping.
+
+- `.comic-distort-bubble`: `display: none` at rest → `display: flex` on group hover, fires `comicDistortPop` animation.
+- `.comic-inner-icon`: nested image element, fires `comicIconWobble` animation on group hover.
+- Positioned absolutely above the badge (`bottom: calc(100% + 8px)`), centered via `left-1/2`.
+- Visual style: `bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E] rounded-xl` — solid opaque comic popup with accent offset shadow.
+- Speech bubble pointer: downward CSS triangle at `top-full`.
+
 ### Usage Pattern
 
 ```tsx
@@ -767,6 +948,36 @@ For social links, badge pills, and contact row items.
 
 All content data is hardcoded as typed arrays directly inside `app/page.tsx`. There is no CMS or external data source.
 
+### `skillIcons` Map (NEW)
+
+A `Record<string, string>` mapping skill names to icon file paths in `/public/icons/`. Used by the Tech Stack section's comic distort bubble popup system. Skills not in this map render as plain text badges (no popup).
+
+```ts
+const skillIcons: Record<string, string> = {
+  "React": "/icons/react.webp",
+  "Next.js": "/icons/nextjs.png",
+  "Tailwind CSS": "/icons/tailwind.webp",
+  "Sass/SCSS": "/icons/sass.png",
+  "JavaScript (ES6+)": "/icons/javascript.png",
+  "Python": "/icons/python.webp",
+  "Supabase": "/icons/supabase.png",
+  "PostgreSQL": "/icons/postgresql.png",
+  "MySQL": "/icons/mysql.png",
+  "WordPress": "/icons/wordpress.png",
+  "Elementor": "/icons/elementor.png",
+  "Git": "/icons/git.webp",
+  "GitHub": "/icons/github.png",
+  "GitLab": "/icons/gitlab.svg",
+  "Figma": "/icons/figma.svg",
+  "Adobe XD": "/icons/adobexd.webp",
+  "Adobe Illustrator": "/icons/adobe_illustrator.webp",
+  "Lucidchart": "/icons/lucidchart.webp",
+  "Miro": "/icons/miro.svg",
+};
+```
+
+Skills with **no icon mapping** (render as plain badges): `RESTful APIs`, `Axios`, `TanStack Query`, `Postman`, `SQL`, `Advanced Custom Fields (ACF)`, `Agile / Scrum`, `SRS Documentation`, `Video Editing`.
+
 ### `contacts`
 
 ```ts
@@ -781,20 +992,21 @@ All content data is hardcoded as typed arrays directly inside `app/page.tsx`. Th
 | Title | Icon | Skills |
 | :--- | :--- | :--- |
 | Frontend Engineering | `<Code2 />` | React, Next.js, Tailwind CSS, Sass/SCSS, JavaScript (ES6+) |
-| Backend & Database | `<Database />` | Python, Supabase, PostgreSQL, SQL |
+| Backend & Database | `<Database />` | Python, Supabase, PostgreSQL, MySQL, SQL |
 | APIs & Data Fetching | `<Layers />` | RESTful APIs, Axios, TanStack Query, Postman |
 | CMS & Web Platforms | `<Globe />` | WordPress, Elementor, Advanced Custom Fields (ACF) |
 | Version Control & Methodology | `<Terminal />` | Git, GitHub, GitLab, Agile / Scrum, SRS Documentation |
 | UI/UX & Multimedia | `<Film />` | Figma, Adobe XD, Adobe Illustrator, Lucidchart, Miro, Video Editing |
 
-### `workExperience` (4 items)
+### `workExperience` (3 items)
+
+> **Changed:** `freelance-dev` (Freelance Client Projects / Frontend Web Developer) entry has been removed from the array.
 
 | ID | Company | Role | Duration |
 | :--- | :--- | :--- | :--- |
 | `zynappse` | Zynappse Corporation | Web Developer Intern | Feb 2026 – Apr 2026 |
 | `exaweb` | ExaWeb Corporation | Web Developer Intern | Jul 2025 – Aug 2025 |
 | `freelance-film` | Freelance Creative | Lead Video Editor & Event Cinematographer | 2023 – Present |
-| `freelance-dev` | Freelance Client Projects | Frontend Web Developer & UI Designer | 2024 – Present |
 
 ### `education` (2 items)
 
@@ -949,6 +1161,11 @@ Before making any changes, run through this checklist:
 - [ ] Any new interactive element (button, link, pill) uses `.comic-btn`, `.comic-pill`, or `.comic-icon`/`.comic-text` as appropriate.
 - [ ] No raw `transition-all` without the spring cubic-bezier on elements that should feel tactile.
 - [ ] Active/press state uses `active:scale-[0.95]` or `.comic-btn:active`.
+
+### Security & Forms
+- [ ] Any new contact form preserves the hidden honeypot `<input name="website" tabIndex={-1} autoComplete="off" />` pattern.
+- [ ] Server actions that accept user input validate type, length, and format before passing to the email layer.
+- [ ] `api/resend.ts` uses `escapeHtml()` on any user-supplied values injected into the HTML email body.
 
 ### De-Slop Compliance
 - [ ] No new eyebrow labels above section headings (plain `<h2 font-bebas>` leads directly).

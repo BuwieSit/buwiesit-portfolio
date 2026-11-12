@@ -155,6 +155,26 @@ Applies a playful squash-and-stretch wobble to buttons and pills on hover:
   - Comic speech-bubble pointer anchored directly to the text base.
 - **Skills without Icons:** Left unadorned as clean, static editorial text pills without interactive popups ("leave it be").
 
+### 3.7 Hero Reel Full-Width Tilted Maximalist Comic Carousel (`components/TestimonialCarousel.tsx`)
+- **Full-Screen Bleed:** Spans 100% of the viewport width edge-to-edge (`w-[115vw] -ml-[7.5vw] overflow-hidden`).
+- **Sideways Comic Tilt:** Slanted dynamically at `-2deg` to `-2.5deg` across the entire screen like an oversized comic film strip.
+- **Pure Visual Ribbon (Non-Interactive):** Fully non-interactive (`pointer-events-none select-none`), with uninterrupted continuous streaming (no pause-on-hover) that sets an ambient cinematic and comic tone.
+- **Maximalist Comic Styling:**
+  - Chunky roasted espresso comic borders (`border-[3px] border-editor-primary`).
+  - Hard cel-shaded offset drop shadows (`shadow-[6px_6px_0px_#2A1F14] sm:shadow-[8px_8px_0px_#2A1F14]`).
+  - Physical comic sticker category badges (`bg-editor-bg border-2 border-editor-primary shadow-[2px_2px_0px_#2A1F14]`).
+  - Alternating card micro-tilts (`even:-rotate-1 odd:rotate-1`) for a dynamic comic collage rhythm.
+  - Framing comic ticker tape ribbons running in Bebas Neue uppercase.
+
+### 3.8 Interactive Discipline Switchboard & Job Visual Mockups (`#about`)
+- **Single-Paragraph Editorial Summary:** Replaced dense multi-paragraph narrative with a punchy, high-impact summary capturing Buwie's identity as an IT graduate based in Rizal, Philippines, specializing in the UX side of frontend & UI/UX alongside event cinematography.
+- **Interactive Category Switchboard:** Three tactile comic pill toggle buttons (`FRONTEND`, `VIDEO EDIT`, `UI / UX`) with `FRONTEND` as default.
+- **Dynamic Job Prop Mockups:**
+  - **Frontend:** Stylized comic browser window with mac traffic lights, URL bar, code brackets, terminal deployment prompt, and status tags.
+  - **Video Edit:** Stylized comic film strip with perforations, timecode badge (`REC ● 00:04:18:22`), clip timeline with razor/scissors trim mark, and audio waveform EQ.
+  - **UI / UX:** Stylized Figma canvas wireframe mockup with 8px layout grid, artboard placeholders, and vector pen tool / bezier node overlay.
+- **Maximalist Full-Width Comic Styling:** The FRONTEND, VIDEO EDIT, UI/UX switchboard and active showcase panel break out to span the **100% full viewport width** edge-to-edge with heavy comic border rules (`border-y-[3px] sm:border-y-4 border-editor-surface/40`), full-screen halftone dot matrix background, top and bottom Bebas Neue ticker tape rules, and cel-shaded card shadow (`shadow-[8px_8px_0px_#8B6F4E]`).
+
 ---
 
 ## 4. Design System Tokens & Color Harmony
