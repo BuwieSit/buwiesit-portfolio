@@ -31,8 +31,16 @@ const bebas = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Buhawie Santos — Frontend Developer & Video Editor",
-  description: "Editorial portfolio of Buhawie 'Buwie' Santos: React, Next.js web application engineering and cinematic event video editing.",
+  title: "Buhawie Santos | Web Developer & Frontend Engineer",
+  description: "Portfolio of Buhawie Santos, IT graduate skilled in React, Next.js, Python, Tailwind CSS, and full-stack web application development.",
+  openGraph: {
+    title: "Buhawie Santos - Web Developer Portfolio",
+    description: "Explore web projects, technical skills, and software development experience by Buhawie Santos.",
+    url: "https://buhawiesit.vercel.app/",
+    siteName: "Buhawie Santos Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -57,9 +65,10 @@ export default function RootLayout({
                 <span className="text-editor-bg/60 font-medium">Frontend Developer · Cinematographer</span>
               </div>
               
-              <div className="flex items-center gap-6 font-semibold">
+              <div className="flex items-center gap-5 sm:gap-6 font-semibold flex-wrap justify-center">
                 <a href="#home" className="hover:text-editor-surface transition-colors">Home</a>
                 <a href="#about" className="hover:text-editor-surface transition-colors">About</a>
+                <a href="#experience" className="hover:text-editor-surface transition-colors">Experience</a>
                 <a href="#projects" className="hover:text-editor-surface transition-colors">Projects</a>
                 <a href="#contacts" className="hover:text-editor-surface transition-colors">Contacts</a>
               </div>

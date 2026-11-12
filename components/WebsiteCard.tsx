@@ -11,9 +11,11 @@ interface ProjectCardProps {
   link: string;
   mockupImg?: string;
   tags?: string[];
+  role?: string;
+  tagline?: string;
 }
 
-export default function WebsiteCard({ type, title, description, link, mockupImg, tags = [] }: ProjectCardProps) {
+export default function WebsiteCard({ type, title, description, link, mockupImg, tags = [], role, tagline }: ProjectCardProps) {
   return (
     <Link 
       href={link} 
@@ -44,9 +46,9 @@ export default function WebsiteCard({ type, title, description, link, mockupImg,
           {type}
         </span>
 
-        <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold bg-editor-surface/90 text-editor-primary px-3 py-1 rounded-full shadow-sm transition-all duration-300 group-hover:bg-editor-bg group-hover:scale-105">
-          <span>Live Site</span>
-          <ExternalLink className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        <span className="comic-pill inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold bg-editor-surface/90 text-editor-primary px-3 py-1 rounded-full shadow-sm group-hover:bg-editor-bg">
+          <span className="comic-text">Live Site</span>
+          <ExternalLink className="comic-icon w-3 h-3" />
         </span>
       </div>
       
@@ -68,6 +70,12 @@ export default function WebsiteCard({ type, title, description, link, mockupImg,
           </div>
         )}
 
+        {tagline && (
+          <p className="font-times-new italic text-editor-surface/90 text-xs sm:text-sm line-clamp-1">
+            {tagline}
+          </p>
+        )}
+
         <h3 
           className="font-bold line-clamp-2 text-editor-bg group-hover:text-editor-surface transition-colors leading-snug drop-shadow-sm"
           style={{ 
@@ -76,6 +84,12 @@ export default function WebsiteCard({ type, title, description, link, mockupImg,
         >
           {title}
         </h3>
+
+        {role && (
+          <p className="text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-editor-surface/90">
+            <span className="text-editor-bg/70">Role:</span> {role}
+          </p>
+        )}
         
         <p 
           className="text-editor-bg/85 line-clamp-2 leading-relaxed"

@@ -43,9 +43,9 @@ export default function Carousel({ items = [], ariaLabel = "Featured Projects Ca
         <button 
           onClick={handlePrev}
           aria-label="Previous project"
-          className="absolute left-1 sm:left-4 z-30 p-2 sm:p-3.5 bg-editor-bg/95 hover:bg-editor-primary hover:text-editor-bg border border-editor-primary/20 text-editor-primary rounded-full transition-all duration-300 shadow-lg hover:scale-110 active:scale-90 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-editor-accent"
+          className="comic-btn group absolute left-1 sm:left-4 z-30 p-2 sm:p-3.5 bg-editor-bg/95 hover:bg-editor-primary hover:text-editor-bg border border-editor-primary/20 text-editor-primary rounded-full shadow-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-editor-accent"
         >
-          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowLeft className="comic-icon w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Carousel Slides Stage */}
@@ -81,9 +81,9 @@ export default function Carousel({ items = [], ariaLabel = "Featured Projects Ca
         <button 
           onClick={handleNext}
           aria-label="Next project"
-          className="absolute right-1 sm:right-4 z-30 p-2 sm:p-3.5 bg-editor-bg/95 hover:bg-editor-primary hover:text-editor-bg border border-editor-primary/20 text-editor-primary rounded-full transition-all duration-300 shadow-lg hover:scale-110 active:scale-90 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-editor-accent"
+          className="comic-btn group absolute right-1 sm:right-4 z-30 p-2 sm:p-3.5 bg-editor-bg/95 hover:bg-editor-primary hover:text-editor-bg border border-editor-primary/20 text-editor-primary rounded-full shadow-lg cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-editor-accent"
         >
-          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          <ArrowRight className="comic-icon w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         
       </div>
@@ -98,7 +98,7 @@ export default function Carousel({ items = [], ariaLabel = "Featured Projects Ca
               key={index}
               onClick={() => setActiveIndex(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ease-in-out transform cursor-pointer hover:scale-110 active:scale-95 ${
+              className={`h-2 sm:h-2.5 rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform cursor-pointer hover:scale-125 active:scale-90 ${
                 isActive 
                   ? 'w-7 sm:w-9 bg-editor-accent shadow-xs' 
                   : 'w-2 sm:w-2.5 bg-editor-primary/25 hover:bg-editor-primary/50'

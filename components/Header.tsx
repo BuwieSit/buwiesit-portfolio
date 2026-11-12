@@ -3,18 +3,18 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Home, User, Library, Send } from 'lucide-react';
+import { Home, User, Briefcase, Library, Send, FileDown } from 'lucide-react';
 
 export default function Header() {
   const [isDarkSection, setIsDarkSection] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
-    const darkSections = ['about', 'contacts'];
+    const darkSections = ['about', 'experience', 'contacts'];
     
     const handleScroll = () => {
       const headerOffset = 120; // Check position relative to sticky header height
-      const sections = ['home', 'about', 'projects', 'contacts'];
+      const sections = ['home', 'about', 'experience', 'projects', 'contacts'];
       let current = 'home';
 
       for (const sectionId of sections) {
@@ -41,8 +41,9 @@ export default function Header() {
   const navItems = [
     { id: 1, icon: <Home className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Home", link: "home" }, 
     { id: 2, icon: <User className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "About", link: "about" },
-    { id: 3, icon: <Library className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Projects", link: "projects" },
-    { id: 4, icon: <Send className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Contacts", link: "contacts" },
+    { id: 3, icon: <Briefcase className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Experience", link: "experience" },
+    { id: 4, icon: <Library className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Projects", link: "projects" },
+    { id: 5, icon: <Send className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />, text: "Contacts", link: "contacts" },
   ];
 
   return (
@@ -50,7 +51,7 @@ export default function Header() {
       <div className="flex items-center justify-center gap-2 sm:gap-4 pointer-events-auto max-w-[95vw] sm:max-w-none">
         
         {/* Dynamic Inverting Logo */}
-        <Link href="#home" className="relative group shrink-0 transition-transform duration-300 hover:scale-105">
+        <Link href="#home" className="relative comic-pill group shrink-0">
           <div className="relative w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20">
             <Image 
               src="/editor_logo/dark_nobg.png" 
@@ -146,6 +147,23 @@ export default function Header() {
             })}
           </ul>
         </nav>
+
+        {/* Quick Resume Download CTA Button */}
+        <a 
+          href="/BUHAWIE_SANTOS_RESUME.pdf" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          download="BUHAWIE_SANTOS_RESUME.pdf"
+          className={`comic-btn h-11 sm:h-15 px-3.5 sm:px-5 rounded-full border shadow-xl backdrop-blur-3xl transition-all duration-500 ease-in-out flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold tracking-wide select-none group shrink-0 ${
+            isDarkSection 
+              ? 'bg-editor-surface/90 border-editor-surface text-editor-primary hover:bg-editor-bg shadow-black/40' 
+              : 'bg-editor-primary/90 border-editor-primary text-editor-bg hover:bg-editor-accent shadow-black/10'
+          }`}
+          aria-label="Download Resume (PDF)"
+        >
+          <FileDown className="comic-icon w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span className="comic-text hidden sm:inline">Resume</span>
+        </a>
 
       </div>
     </header>

@@ -82,15 +82,15 @@ export default function VideoCard({ embedUrl, title, description, category = "Ci
           {category}
         </span>
 
-        <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold bg-editor-surface/90 text-editor-primary px-3 py-1 rounded-full shadow-sm transition-transform duration-300 group-hover:scale-105">
-          <span>Watch Film</span>
+        <span className="comic-pill inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold bg-editor-surface/90 text-editor-primary px-3 py-1 rounded-full shadow-sm">
+          <span className="comic-text">Watch Film</span>
         </span>
       </div>
 
       {/* 4. Center: Tactile Cinematic Play Button */}
       <div className="relative flex-grow flex items-center justify-center z-10">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-editor-surface/95 text-editor-primary flex items-center justify-center shadow-2xl transition-all duration-300 group-hover:scale-115 group-hover:bg-editor-bg group-active:scale-95 border-2 border-editor-primary/20">
-          <Play className="w-5 h-5 sm:w-7 sm:h-7 ml-0.5 fill-editor-primary" />
+        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-editor-surface/95 text-editor-primary flex items-center justify-center shadow-2xl transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-120 group-hover:bg-editor-bg group-active:scale-90 border-2 border-editor-primary/20">
+          <Play className="comic-icon w-5 h-5 sm:w-7 sm:h-7 ml-0.5 fill-editor-primary" />
         </div>
       </div>
 

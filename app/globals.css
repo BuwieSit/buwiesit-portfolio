@@ -40,7 +40,7 @@ body {
   font-family: var(--font-poppins);
 }
 
-/* Comic-style Header Navigation Keyframes & Interactions */
+/* Comic-style Keyframes & Interactions */
 @keyframes comicIconPop {
   0% {
     opacity: 0;
@@ -83,6 +83,22 @@ body {
   }
 }
 
+@keyframes comicBounce {
+  0% { transform: scale(1) translateY(0); }
+  30% { transform: scale(1.06) translateY(-3px) rotate(-1.5deg); }
+  60% { transform: scale(0.98) translateY(-1px) rotate(1deg); }
+  85% { transform: scale(1.03) translateY(-2px) rotate(-0.5deg); }
+  100% { transform: scale(1.02) translateY(-2px) rotate(0deg); }
+}
+
+@keyframes comicIconKick {
+  0% { transform: scale(1) rotate(0deg); }
+  35% { transform: scale(1.35) rotate(-14deg); }
+  70% { transform: scale(0.95) rotate(6deg); }
+  85% { transform: scale(1.15) rotate(-2deg); }
+  100% { transform: scale(1.1) rotate(0deg); }
+}
+
 .animate-comic-icon {
   opacity: 0;
   transform: scale(0.4);
@@ -107,4 +123,139 @@ body {
 .group:hover .animate-comic-word,
 .group:focus-visible .animate-comic-word {
   animation: comicWordPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Comic Utility Classes for Consistent Site-Wide Interactions */
+.comic-btn {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              background-color 0.25s ease, 
+              border-color 0.25s ease, 
+              box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.comic-btn:hover {
+  transform: scale(1.04) translateY(-2px);
+}
+
+.comic-btn:active {
+  transform: scale(0.95) translateY(0);
+}
+
+.comic-icon {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.group:hover .comic-icon,
+.comic-btn:hover .comic-icon {
+  animation: comicIconKick 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.comic-text {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.group:hover .comic-text,
+.comic-btn:hover .comic-text {
+  transform: scale(1.03);
+}
+
+.comic-pill {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.comic-pill:hover {
+  transform: scale(1.06) rotate(-1.5deg) translateY(-1px);
+}
+
+.comic-pill:active {
+  transform: scale(0.95) rotate(0deg) translateY(0);
+}
+
+/* Comic Distorted Logo Popup Keyframes for Skills / Tech Stack */
+@keyframes comicDistortPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 12px) scale(0.2) rotate(-16deg) skewX(-10deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -6px) scale(1.24, 0.88) rotate(8deg) skewX(6deg);
+  }
+  65% {
+    transform: translate(-50%, 0px) scale(0.94, 1.08) rotate(-4deg) skewX(-3deg);
+  }
+  85% {
+    transform: translate(-50%, 0px) scale(1.04, 0.98) rotate(1.5deg) skewX(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0px) scale(1, 1) rotate(-2deg) skewX(-1deg);
+  }
+}
+
+@keyframes comicIconWobble {
+  0% {
+    transform: scale(0.6) rotate(14deg);
+  }
+  45% {
+    transform: scale(1.22) rotate(-10deg);
+  }
+  75% {
+    transform: scale(0.95) rotate(4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.comic-distort-bubble {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 8px) scale(0.4) rotate(-10deg);
+  transform-origin: bottom center;
+  will-change: transform, opacity;
+}
+
+.group:hover .comic-distort-bubble,
+.group:focus-visible .comic-distort-bubble {
+  display: flex;
+  opacity: 1;
+  animation: comicDistortPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.comic-distort-bubble .comic-inner-icon {
+  transform: scale(0.9) rotate(0deg);
+  will-change: transform;
+}
+
+.group:hover .comic-distort-bubble .comic-inner-icon,
+.group:focus-visible .comic-distort-bubble .comic-inner-icon {
+  animation: comicIconWobble 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comic-distort-bubble {
+    display: none !important;
+  }
+  .group:hover .comic-distort-bubble,
+  .group:focus-visible .comic-distort-bubble {
+    display: flex !important;
+    animation: none !important;
+    transform: translate(-50%, 0) !important;
+    opacity: 1 !important;
+  }
+  .group:hover .comic-distort-bubble .comic-inner-icon,
+  .group:focus-visible .comic-distort-bubble .comic-inner-icon {
+    animation: none !important;
+    transform: none !important;
+  }
 }

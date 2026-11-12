@@ -4,11 +4,26 @@ import Image from "next/image";
 import Carousel from "@/components/Carousel";
 import WebsiteCard from "@/components/WebsiteCard";
 import VideoCard from "@/components/VideoCard";
+import ProjectReelCard from "@/components/ProjectReelCard";
 import Link from "next/link";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { useState } from "react";
 import { handleSendEmail } from "./actions";
-import { ArrowUpRight, Send, Mail, Code2, Film, Sparkles } from "lucide-react";
+import { 
+  ArrowUpRight, 
+  Send, 
+  Mail, 
+  Code2, 
+  Film, 
+  Sparkles, 
+  GraduationCap, 
+  Award, 
+  Layers, 
+  Terminal, 
+  Database, 
+  Globe, 
+  Building2,
+} from "lucide-react";
 
 export default function Home() {
   const [clientEmail, setClientEmail] = useState('');
@@ -39,22 +54,133 @@ export default function Home() {
     { id: 2, platform: "GitHub", icon: "/icons/github.png", text: "BuwieSit", link: "https://github.com/BuwieSit" }
   ];
 
-  const devSkills = [
-    { text: "React", icon: "/skills/react.png" },
-    { text: "Next.js", icon: "/skills/nextjs.webp" },
-    { text: "Tailwind CSS", icon: "/skills/tailwind.svg" },
-    { text: "Sass CSS", icon: "/skills/sass.png" },
-    { text: "Python", icon: "/skills/python.png" },
-    { text: "Git", icon: "/skills/git.png" },
+  // Technical skill icon mappings corresponding to files in public/icons/
+  const skillIcons: Record<string, string> = {
+    "React": "/icons/react.webp",
+    "Next.js": "/icons/nextjs.png",
+    "Tailwind CSS": "/icons/tailwind.webp",
+    "Sass/SCSS": "/icons/sass.png",
+    "JavaScript (ES6+)": "/icons/javascript.png",
+    "Python": "/icons/python.webp",
+    "Supabase": "/icons/supabase.png",
+    "PostgreSQL": "/icons/postgresql.png",
+    "MySQL": "/icons/mysql.png",
+    "WordPress": "/icons/wordpress.png",
+    "Elementor": "/icons/elementor.png",
+    "Git": "/icons/git.webp",
+    "GitHub": "/icons/github.png",
+    "GitLab": "/icons/gitlab.svg",
+    "Figma": "/icons/figma.svg",
+    "Adobe XD": "/icons/adobexd.webp",
+    "Adobe Illustrator": "/icons/adobe_illustrator.webp",
+    "Lucidchart": "/icons/lucidchart.webp",
+    "Miro": "/icons/miro.svg",
+  };
+
+  // 6 Structured Skill Categories as specified
+  const skillCategories = [
+    {
+      title: "Frontend Engineering",
+      icon: <Code2 className="w-4 h-4 text-editor-surface" />,
+      skills: ["React", "Next.js", "Tailwind CSS", "Sass/SCSS", "JavaScript (ES6+)"]
+    },
+    {
+      title: "Backend & Database",
+      icon: <Database className="w-4 h-4 text-editor-surface" />,
+      skills: ["Python", "Supabase", "PostgreSQL", "MySQL", "SQL"]
+    },
+    {
+      title: "APIs & Data Fetching",
+      icon: <Layers className="w-4 h-4 text-editor-surface" />,
+      skills: ["RESTful APIs", "Axios", "TanStack Query", "Postman"]
+    },
+    {
+      title: "CMS & Web Platforms",
+      icon: <Globe className="w-4 h-4 text-editor-surface" />,
+      skills: ["WordPress", "Elementor", "Advanced Custom Fields (ACF)"]
+    },
+    {
+      title: "Version Control & Methodology",
+      icon: <Terminal className="w-4 h-4 text-editor-surface" />,
+      skills: ["Git", "GitHub", "GitLab", "Agile / Scrum", "SRS Documentation"]
+    },
+    {
+      title: "UI/UX & Multimedia",
+      icon: <Film className="w-4 h-4 text-editor-surface" />,
+      skills: ["Figma", "Adobe XD", "Adobe Illustrator", "Lucidchart", "Miro", "Video Editing"]
+    }
   ];
 
-  const creativeSkills = [
-    { text: "Premiere Pro", icon: "/skills/premiere.png" },
-    { text: "Figma", icon: "/skills/figma.png" },
-    { text: "Adobe XD", icon: "/skills/adobexd.png" },
-    { text: "Illustrator", icon: "/skills/illustrator.webp" },
-    { text: "WordPress", icon: "/skills/wordpress.png" },
-    { text: "Elementor", icon: "/skills/elementor_logo.png" },
+  const workExperience = [
+    {
+      id: "zynappse",
+      company: "Zynappse Corporation",
+      role: "Web Developer Intern",
+      duration: "February 2026 – April 2026",
+      badges: ["Next.js", "React", "Sass/SCSS", "Flutter", "Postman", "REST API", "GitLab", "Adobe XD", "Adobe Illustrator"],
+      achievements: [
+        "Migrated legacy React applications to Next.js, implementing Server-Side Rendering (SSR) and modular SCSS architecture for enhanced responsiveness and page performance.",
+        "Tested and validated RESTful API endpoints for a Flutter-based store clock-in application using Postman.",
+        "Managed code integration and resolution of Git merge conflicts in GitLab during sprint development cycles.",
+        "Designed website prototypes and vector UI assets using Adobe XD and Adobe Illustrator."
+      ]
+    },
+    {
+      id: "exaweb",
+      company: "ExaWeb Corporation",
+      role: "Web Developer Intern",
+      duration: "July 2025 – August 2025",
+      badges: ["WordPress", "Elementor", "ACF/SCF", "SEO", "Lighthouse", "PageSpeed Insights", "Agile/Scrum"],
+      achievements: [
+        "Built and modernized client websites using WordPress and Elementor, configuring Advanced Custom Fields (ACF) and Secure Custom Fields (SCF) for tailored content management.",
+        "Conducted technical SEO audits, meta-data optimization, and performance refactoring using PageSpeed Insights and Google Lighthouse.",
+        "Participated in daily Agile standups and sprint planning sessions to prioritize web optimization tasks."
+      ]
+    },
+    {
+      id: "freelance-film",
+      company: "Freelance Creative",
+      role: "Lead Video Editor & Event Cinematographer",
+      duration: "2023 – Present",
+      badges: ["Premiere Pro", "After Effects", "DaVinci Resolve", "Color Grading", "Audio Mastering", "Same-Day-Edits (SDE)"],
+      achievements: [
+        "Directed, filmed, and edited Same-Day-Edit (SDE) wedding films, debut teasers, and promotional reels under rapid event turnaround deadlines.",
+        "Engineered narrative audio pacing and rhythm cuts synced with emotional score arrangements.",
+        "Executed film-look color grading, cinematic LUT workflows, and high-fidelity video mastering for web and commercial broadcast."
+      ]
+    }
+  ];
+
+  const education = [
+    {
+      institution: "Polytechnic University of the Philippines",
+      campus: "Sta. Mesa, Manila",
+      degree: "Diploma in Information Technology",
+      year: "Class of 2026",
+      honor: "GWA: 1.34",
+      description: "Comprehensive coursework in software architecture, web application engineering, database administration, and capstone systems analysis."
+    },
+    {
+      institution: "Systems Technology Institute",
+      campus: "STI College Ortigas-Cainta",
+      degree: "Mobile App and Web Development (MAWD)",
+      year: "Graduated 2023",
+      honor: null,
+      description: "Focused foundation in user interface design, core programming principles, object-oriented concepts, and mobile application prototypes."
+    }
+  ];
+
+  const certifications = [
+    {
+      title: "TESDA National Certificate II (NC II)",
+      field: "Computer Systems Servicing",
+      description: "Certified competency in hardware diagnostics, network cable configuration, operating system installation, and computer servicing."
+    },
+    {
+      title: "TESDA National Certificate III (NC III)",
+      field: "Visual Graphics Design",
+      description: "Certified proficiency in vector illustration, digital layouts, raster asset production, and typography composition for print and web media."
+    }
   ];
 
   const videoProjects = [
@@ -131,12 +257,14 @@ export default function Home() {
       id: "web-1",
       content: (
         <WebsiteCard 
-          type="International Competition"
-          title="TAHAK: Business Proposal & Tourism Portal"
-          description="Developed for an international competition in Vietnam. A cultural tourism website built with React, focusing on visual storytelling and responsive layouts."
-          link="https://tahakver2.vercel.app/"
-          mockupImg="/websites/tahak.png"
-          tags={["React", "Figma", "Tailwind CSS", "Vercel"]}
+          type="Capstone Thesis"
+          title="OASIS: OJT Administration & Information System"
+          tagline="Centralized web system for PUP ITech internship administration."
+          role="Full-Stack/Frontend Developer & System Analyst (Capstone)"
+          description="Modeled system workflows and produced comprehensive SRS documentation, DFDs, ERDs, and sequence diagrams. Built dynamic frontend components connected to asynchronous REST API endpoints via TanStack Query for cached data fetching and state management."
+          link="https://oasis-webapp-p21y.vercel.app/"
+          mockupImg="/websites/oasis.png"
+          tags={["React", "Tailwind CSS", "Python", "Axios", "TanStack Query", "PostgreSQL", "Vercel"]}
         />
       )
     },
@@ -144,12 +272,14 @@ export default function Home() {
       id: "web-2",
       content: (
         <WebsiteCard 
-          type="Municipality Portal"
-          title="Ibajay Aklan Official Web Platform"
-          description="Led the design in Figma and built the frontend with JavaScript, routing parameters, and PHP/MySQL backend for municipal public access and records."
-          link="https://ibajayaklan.vercel.app/"
-          mockupImg="/websites/ibajay.png"
-          tags={["JavaScript", "Figma", "PHP", "MySQL"]}
+          type="International Competition"
+          title="TAHAK: Wellness Tourism Booking Platform"
+          tagline="Single-page wellness tourism platform developed for a venture in Dolores, Quezon."
+          role="Web Application Developer"
+          description="Architected a responsive single-page application (SPA) handling both tourist customer bookings and internal administrative dashboard controls. Partnered with a multidisciplinary team (biology & tourism specialists) to translate an award-winning ecotourism pitch into an operational production build."
+          link="https://tahakver2.vercel.app/"
+          mockupImg="/websites/tahak.png"
+          tags={["React", "Supabase", "Tailwind CSS", "Vercel"]}
         />
       )
     },
@@ -157,12 +287,14 @@ export default function Home() {
       id: "web-3",
       content: (
         <WebsiteCard 
-          type="Capstone Thesis"
-          title="OASIS: OJT Administration & Information System"
-          description="Frontend engineer for academic thesis application. Designed the UI/UX in Figma and built modular React interfaces connected to Python backend services."
-          link="https://oasis-webapp-p21y.vercel.app/"
-          mockupImg="/websites/oasis.png"
-          tags={["React", "Tailwind CSS", "Python API", "UI/UX"]}
+          type="Municipality Portal"
+          title="Ibajay Aklan Official Web Platform"
+          tagline="Public portal and municipal digital record system."
+          role="UI/UX Designer & Frontend Engineer"
+          description="Led the design in Figma and built the frontend with JavaScript, routing parameters, and PHP/MySQL backend for municipal public access and records."
+          link="https://ibajayaklan.vercel.app/"
+          mockupImg="/websites/ibajay.png"
+          tags={["JavaScript", "Figma", "PHP", "MySQL"]}
         />
       )
     },
@@ -172,6 +304,8 @@ export default function Home() {
         <WebsiteCard 
           type="Administrative System"
           title="Market Vendor Registration & Records Portal"
+          tagline="Tabular database and vendor management system."
+          role="Full-Stack Developer"
           description="Vendor records management platform with tabular databases, customized spreadsheet Excel export plugins, and secure database persistence."
           link="https://team2-web.vercel.app/market_vendor/landingPage.html"
           mockupImg="/websites/vendor.png"
@@ -181,7 +315,118 @@ export default function Home() {
     },
   ];
 
-  const combinedProjects = [...websiteProjects, ...videoProjects];
+  const heroReelProjects = [
+    {
+      id: "hero-oasis",
+      content: (
+        <ProjectReelCard 
+          title="OASIS: OJT Administration & Information System"
+          category="Administrative System"
+          imageSrc="/websites/oasis.png"
+          targetHref="#projects"
+        />
+      )
+    },
+    {
+      id: "hero-sde",
+      content: (
+        <ProjectReelCard 
+          title="Wedding SDE (Same Day Edit)"
+          category="Wedding SDE"
+          imageSrc="https://img.youtube.com/vi/VJffXfBqQF4/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+    {
+      id: "hero-tahak",
+      content: (
+        <ProjectReelCard 
+          title="TAHAK: Wellness Tourism Booking Platform"
+          category="Booking Platform"
+          imageSrc="/websites/tahak.png"
+          targetHref="#projects"
+        />
+      )
+    },
+    {
+      id: "hero-teaser",
+      content: (
+        <ProjectReelCard 
+          title="Capstone Project Cinematic Teaser"
+          category="Project Teaser"
+          imageSrc="https://img.youtube.com/vi/wJFLJMs7fls/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+    {
+      id: "hero-vendor",
+      content: (
+        <ProjectReelCard 
+          title="Market Vendor Registration & Records Portal"
+          category="Administrative System"
+          imageSrc="/websites/vendor.png"
+          targetHref="#projects"
+        />
+      )
+    },
+    {
+      id: "hero-anime",
+      content: (
+        <ProjectReelCard 
+          title="Anime-Inspired Wedding Film"
+          category="Creative Wedding"
+          imageSrc="https://img.youtube.com/vi/-yE81PG0o1U/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+    {
+      id: "hero-ibajay",
+      content: (
+        <ProjectReelCard 
+          title="Ibajay Aklan Official Web Platform"
+          category="Municipality Portal"
+          imageSrc="/websites/ibajay.png"
+          targetHref="#projects"
+        />
+      )
+    },
+    {
+      id: "hero-std",
+      content: (
+        <ProjectReelCard 
+          title="Save the Date Cinematic Edit"
+          category="Save The Date"
+          imageSrc="https://img.youtube.com/vi/omgqVTdsSRg/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+    {
+      id: "hero-music",
+      content: (
+        <ProjectReelCard 
+          title="School Organization Music Video"
+          category="Music Video"
+          imageSrc="https://img.youtube.com/vi/-z8U2AdQpEE/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+    {
+      id: "hero-debut",
+      content: (
+        <ProjectReelCard 
+          title="Debutant Save the Date Film"
+          category="Debut Film"
+          imageSrc="https://img.youtube.com/vi/n81224VWB5Q/hqdefault.jpg"
+          targetHref="#video-projects"
+        />
+      )
+    },
+  ];
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center font-poppins min-h-screen">
@@ -205,15 +450,6 @@ export default function Home() {
           
           {/* Left Column: Typographic Masthead */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-3 sm:gap-4 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-editor-surface/30 border border-editor-accent/30 text-[11px] sm:text-xs font-semibold tracking-wider text-editor-accent shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-editor-accent animate-pulse" />
-              AVAILABLE FOR DEVELOPMENT & FILM PROJECTS
-            </div>
-
-            <p className="font-times-new italic text-editor-accent text-base sm:text-lg md:text-xl -mb-2">
-              The Dual Craft of
-            </p>
-            
             <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bebas tracking-wide leading-none text-editor-primary">
               Buhawie Santos
             </h1>
@@ -223,35 +459,35 @@ export default function Home() {
             </p>
 
             {/* Social Channels */}
-            <div className="flex items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-2">
               {contacts.map((contact) => (
                 <Link 
                   href={contact.link} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   key={contact.id} 
-                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-editor-surface/20 border border-editor-surface/40 hover:bg-editor-surface/40 hover:border-editor-accent/50 transition-all duration-300 hover:-translate-y-0.5 shadow-xs"
+                  className="comic-pill group flex items-center gap-2 px-3.5 py-2 rounded-xl bg-editor-surface/20 border border-editor-surface/40 hover:bg-editor-surface/40 hover:border-editor-accent/50 shadow-xs"
                 >
-                  <Image src={contact.icon} alt={contact.platform} width={20} height={20} priority className="w-4 h-4 sm:w-5 sm:h-5 object-contain" />
-                  <span className="text-xs font-bold text-editor-primary">{contact.platform}</span>
+                  <Image src={contact.icon} alt={contact.platform} width={20} height={20} priority className="comic-icon w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+                  <span className="comic-text text-xs font-bold text-editor-primary">{contact.platform}</span>
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Right Column: Tactile Buttons */}
-          <div className="flex flex-col sm:flex-row lg:flex-col gap-3 sm:gap-4 w-full sm:w-auto shrink-0 justify-center items-center lg:items-end">
-            <Link href="#contacts" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto bg-editor-primary text-editor-bg border border-editor-primary px-7 py-3.5 sm:py-4 rounded-xl font-bold cursor-pointer transition-all duration-300 hover:bg-editor-accent hover:border-editor-accent hover:-translate-y-0.5 active:scale-[0.98] text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2.5 shadow-md">
-                <span>Start a Project</span>
-                <Send className="w-3.5 h-3.5" />
+          {/* Right Column: Tactile CTAs */}
+          <div className="flex flex-row items-center gap-3 w-full sm:w-auto shrink-0 justify-center lg:justify-end">
+            <Link href="#contacts" className="flex-1 sm:flex-initial">
+              <button className="comic-btn group w-full sm:w-auto bg-editor-primary text-editor-bg border border-editor-primary px-6 py-3.5 rounded-xl font-bold cursor-pointer hover:bg-editor-accent hover:border-editor-accent text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2 shadow-md">
+                <span className="comic-text">Start a Project</span>
+                <Send className="comic-icon w-3.5 h-3.5" />
               </button>
             </Link>
             
-            <Link href="#projects" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto cursor-pointer transition-all duration-300 border-2 border-editor-primary/80 bg-transparent px-7 py-3.5 sm:py-4 rounded-xl text-editor-primary font-bold hover:bg-editor-primary hover:text-editor-bg hover:-translate-y-0.5 active:scale-[0.98] text-xs sm:text-sm tracking-wide flex items-center justify-center gap-2">
-                <span>Browse Work</span>
-                <ArrowUpRight className="w-4 h-4" />
+            <Link href="#projects" className="flex-1 sm:flex-initial">
+              <button className="comic-btn group w-full sm:w-auto cursor-pointer border border-editor-primary/40 bg-editor-surface/20 px-6 py-3.5 rounded-xl text-editor-primary font-bold hover:bg-editor-primary hover:text-editor-bg text-xs sm:text-sm tracking-wide flex items-center justify-center gap-1.5 shadow-xs">
+                <span className="comic-text">Browse Work</span>
+                <ArrowUpRight className="comic-icon w-4 h-4" />
               </button>
             </Link>
           </div>
@@ -260,10 +496,7 @@ export default function Home() {
         
         {/* Film Slate Reel Marquee */}
         <div className="mt-10 sm:mt-14 w-full relative z-10 border-t border-editor-primary/10 pt-4">
-          <p className="font-times-new italic text-center text-xs tracking-widest uppercase text-editor-accent mb-2">
-            — Selected Film Slates & Interactive Web Deployments —
-          </p>
-          <TestimonialCarousel items={combinedProjects} speed="normal" />
+          <TestimonialCarousel items={heroReelProjects} speed="normal" />
         </div>
         
       </section>
@@ -273,35 +506,30 @@ export default function Home() {
       {/* ================================================================ */}
       <section 
         id="about" 
-        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center border-b border-editor-surface/20"
+        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center border-b border-editor-surface/20 scroll-mt-20 sm:scroll-mt-28"
       >
         <div className="w-full max-w-5xl flex flex-col items-center gap-12 sm:gap-16 z-10">
           
           {/* Section Heading */}
           <div className="flex flex-col items-center text-center gap-2">
-            <span className="font-times-new italic text-editor-surface tracking-widest uppercase text-xs sm:text-sm">
-              The Creator Behind the Work
-            </span>
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-bg">
               About Buwie
             </h2>
           </div>
 
-          {/* Bio Frame: Analog Darkroom Portrait + Editorial Story */}
-          <div className="w-full flex flex-col md:flex-row justify-center items-center md:items-start gap-8 sm:gap-12 bg-editor-bg/5 border border-editor-surface/20 p-6 sm:p-10 rounded-3xl shadow-2xl backdrop-blur-sm">
+          {/* Bio Frame: Analog Darkroom Portrait + Editorial Story — unboxed, direct on canvas */}
+          <div className="w-full flex flex-col md:flex-row justify-center items-center md:items-start gap-10 sm:gap-16">
             
-            {/* Darkroom Portrait Card */}
+            {/* Darkroom Portrait */}
             <div className="relative group shrink-0">
-              <div className="p-2 sm:p-2.5 rounded-2xl bg-editor-surface/15 border border-editor-surface/30 shadow-2xl">
-                <Image 
-                  src="/editor_logo/buwie_pic.jpg" 
-                  alt="Buhawie Santos" 
-                  width={240} 
-                  height={240} 
-                  loading="lazy" 
-                  className="w-40 h-40 sm:w-52 sm:h-52 rounded-xl object-cover grayscale-20 contrast-105 group-hover:grayscale-0 transition-all duration-500" 
-                />
-              </div>
+              <Image 
+                src="/editor_logo/buwie_pic.jpg" 
+                alt="Buhawie Santos" 
+                width={240} 
+                height={240} 
+                loading="lazy" 
+                className="w-40 h-40 sm:w-52 sm:h-52 rounded-xl object-cover grayscale-20 contrast-105 group-hover:grayscale-0 transition-all duration-500" 
+              />
               <div className="mt-2.5 text-center">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-editor-surface/80">
                   SAN PEDRO, PH · 2026
@@ -312,41 +540,41 @@ export default function Home() {
             {/* Narrative Story */}
             <div className="flex flex-col gap-4 text-center md:text-left text-xs sm:text-sm md:text-base leading-relaxed text-editor-bg/90">
               <p>
-                I am <span className="font-bold text-editor-surface">Buhawie Santos</span> (friends and collaborators call me <span className="font-bold text-editor-surface">Buwie</span>). I am currently a 3rd-year Information Technology student based in the Philippines, working where structured engineering meets visual storytelling.
+                I am <span className="font-bold text-editor-surface">Buhawie Santos</span> (friends and collaborators call me <span className="font-bold text-editor-surface">Buwie</span>). I am an Information Technology student and web developer based in the Philippines, working where structured engineering meets visual storytelling.
               </p>
               
               <p>
-                On the code side, I build responsive, production-ready web applications using <strong className="text-editor-bg font-semibold">React, Next.js, Tailwind CSS, and Node.js</strong>. I enjoy crafting clean layouts, architecting maintainable component hierarchies, and implementing accessible interactions.
+                On the code side, I build responsive, production-ready web applications using <strong className="text-editor-bg font-semibold">React, Next.js, Tailwind CSS, and Python/Node.js</strong>. I enjoy crafting clean layouts, architecting maintainable component hierarchies, and implementing accessible interactions with state management like TanStack Query.
               </p>
 
               <p>
                 In cinematography and post-production, I direct and edit <strong className="text-editor-bg font-semibold">Same-Day-Edits (SDEs), wedding films, and debut teasers</strong>. Pacing, audio cutting, and color grading dictate the emotional impact of every cut—disciplines that directly inform how I design intuitive, rhythm-driven user experiences.
               </p>
 
-              {/* Pillar Badges */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 text-left">
-                <div className="p-3 rounded-xl bg-editor-surface/10 border border-editor-surface/20">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1">
-                    <Code2 className="w-4 h-4" />
+              {/* Pillar List — editorial typographic columns, no boxes */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 pt-4 text-left border-t border-editor-surface/20">
+                <div className="py-4 sm:pr-6 sm:border-r border-editor-surface/15">
+                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
+                    <Code2 className="w-4 h-4 shrink-0" />
                     <span className="text-xs font-bold uppercase tracking-wider">Frontend</span>
                   </div>
-                  <p className="text-[11px] text-editor-bg/75">React, Next.js, Tailwind, TypeScript</p>
+                  <p className="text-[11px] text-editor-bg/70">React, Next.js, Tailwind, TypeScript, SCSS</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-editor-surface/10 border border-editor-surface/20">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1">
-                    <Film className="w-4 h-4" />
+                <div className="py-4 sm:px-6 sm:border-r border-editor-surface/15 border-t sm:border-t-0 border-editor-surface/15">
+                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
+                    <Film className="w-4 h-4 shrink-0" />
                     <span className="text-xs font-bold uppercase tracking-wider">Video Edit</span>
                   </div>
-                  <p className="text-[11px] text-editor-bg/75">Wedding SDEs, Premiere Pro, Color Grading</p>
+                  <p className="text-[11px] text-editor-bg/70">Wedding SDEs, Premiere Pro, Color Grading</p>
                 </div>
 
-                <div className="p-3 rounded-xl bg-editor-surface/10 border border-editor-surface/20">
-                  <div className="flex items-center gap-2 text-editor-surface mb-1">
-                    <Sparkles className="w-4 h-4" />
+                <div className="py-4 sm:pl-6 border-t sm:border-t-0 border-editor-surface/15">
+                  <div className="flex items-center gap-2 text-editor-surface mb-1.5">
+                    <Sparkles className="w-4 h-4 shrink-0" />
                     <span className="text-xs font-bold uppercase tracking-wider">UI / UX</span>
                   </div>
-                  <p className="text-[11px] text-editor-bg/75">Figma, Wireframing, Elementor, SEO</p>
+                  <p className="text-[11px] text-editor-bg/70">Figma, Adobe XD, Wireframing, Elementor, SEO</p>
                 </div>
               </div>
 
@@ -354,57 +582,73 @@ export default function Home() {
 
           </div>
 
-          {/* Categorized Skills Section */}
-          <div className="w-full flex flex-col items-center gap-6">
-            <div className="text-center">
-              <span className="font-times-new italic text-editor-surface tracking-widest uppercase text-xs">
-                Technical Toolkit
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-bebas tracking-wide text-editor-bg mt-0.5">
-                Tools & Technologies
+          {/* Tech Stack — open directory grid with comic distorted logo popups */}
+          <div className="w-full flex flex-col gap-6">
+            <div className="border-b border-editor-surface/20 pb-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bebas tracking-wide text-editor-bg">
+                Tech Stack
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
-              
-              {/* Category 1: Development & Code */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-editor-bg/5 border border-editor-surface/20 flex flex-col gap-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-editor-surface flex items-center gap-2">
-                  <Code2 className="w-4 h-4" />
-                  <span>Engineering & Web Development</span>
-                </span>
-                <div className="grid grid-cols-3 gap-3">
-                  {devSkills.map((skill) => (
-                    <div 
-                      key={skill.text} 
-                      className="flex flex-col items-center justify-center p-3 rounded-xl bg-editor-surface/10 border border-editor-surface/15 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group text-center"
-                    >
-                      <Image src={skill.icon} alt={skill.text} width={36} height={36} loading="lazy" className="w-8 h-8 object-contain mb-2 group-hover:scale-110 transition-transform" />
-                      <p className="text-[11px] sm:text-xs font-semibold text-editor-bg">{skill.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7 w-full">
+              {skillCategories.map((category) => (
+                <div 
+                  key={category.title}
+                  className="flex flex-col gap-3"
+                >
+                  <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/15">
+                    {category.icon}
+                    <span className="text-xs font-bold uppercase tracking-wider text-editor-surface">
+                      {category.title}
+                    </span>
+                  </div>
 
-              {/* Category 2: Creative & Post-Production */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-editor-bg/5 border border-editor-surface/20 flex flex-col gap-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-editor-surface flex items-center gap-2">
-                  <Film className="w-4 h-4" />
-                  <span>Design & Post-Production</span>
-                </span>
-                <div className="grid grid-cols-3 gap-3">
-                  {creativeSkills.map((skill) => (
-                    <div 
-                      key={skill.text} 
-                      className="flex flex-col items-center justify-center p-3 rounded-xl bg-editor-surface/10 border border-editor-surface/15 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group text-center"
-                    >
-                      <Image src={skill.icon} alt={skill.text} width={36} height={36} loading="lazy" className="w-8 h-8 object-contain mb-2 group-hover:scale-110 transition-transform" />
-                      <p className="text-[11px] sm:text-xs font-semibold text-editor-bg">{skill.text}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {category.skills.map((skill) => {
+                      const iconPath = skillIcons[skill];
+                      return iconPath ? (
+                        <div
+                          key={skill}
+                          tabIndex={0}
+                          role="button"
+                          aria-label={`${skill} skill icon popup`}
+                          className="group relative inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/85 hover:text-editor-bg hover:bg-editor-surface/20 border border-editor-surface/20 hover:border-editor-accent/70 cursor-pointer active:scale-95 transition-all duration-200 select-none hover:z-30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-editor-accent"
+                        >
+                          <span className="relative z-10 transition-transform duration-200 group-hover:scale-105 inline-block">
+                            {skill}
+                          </span>
 
+                          {/* Comic Distorted Logo Popup */}
+                          <div 
+                            className="comic-distort-bubble hidden group-hover:flex group-focus-visible:flex absolute bottom-[calc(100%+8px)] left-1/2 z-40 filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.35)]"
+                          >
+                            <div className="relative flex items-center justify-center p-2 rounded-xl bg-editor-bg border-2 border-editor-primary shadow-[3px_3px_0px_#8B6F4E]">
+                              <div className="relative w-8 h-8 sm:w-9 sm:h-9">
+                                <Image 
+                                  src={iconPath} 
+                                  alt={`${skill} icon`} 
+                                  fill 
+                                  className="comic-inner-icon object-contain" 
+                                  sizes="36px"
+                                />
+                              </div>
+                              {/* Comic Speech Pointer pointing to text base */}
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-solid border-t-editor-primary border-t-[6px] border-x-transparent border-x-[5px] border-b-0" />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <span 
+                          key={skill}
+                          className="inline-flex items-center text-[11px] font-medium px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-bg/75 border border-transparent select-none"
+                        >
+                          {skill}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -412,21 +656,180 @@ export default function Home() {
       </section>
 
       {/* ================================================================ */}
-      {/* SECTION 3A: WEBSITE PROJECTS (#projects) — Light Linen Palette */}
+      {/* SECTION 3: WORK EXPERIENCE & EDUCATION (#experience) — Deep Roasted Espresso */}
+      {/* ================================================================ */}
+      <section 
+        id="experience" 
+        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center border-b border-editor-surface/20 scroll-mt-20 sm:scroll-mt-28"
+      >
+        <div className="w-full max-w-5xl flex flex-col items-center gap-14 sm:gap-20 z-10">
+          
+          {/* Header */}
+          <div className="w-full flex flex-col gap-2 border-b border-editor-surface/20 pb-6">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-bg">
+              Work Experience
+            </h2>
+            <p className="text-xs sm:text-sm text-editor-bg/75 max-w-lg">
+              Production code migrations, full-stack application testing, and client web optimization.
+            </p>
+          </div>
+
+          {/* Timeline — unboxed editorial list */}
+          <div className="relative w-full flex flex-col gap-0">
+            {workExperience.map((item, index) => (
+              <div 
+                key={item.id} 
+                className="relative flex flex-col md:flex-row items-start gap-6 sm:gap-10 py-8 sm:py-10 border-b border-editor-surface/15 last:border-b-0"
+              >
+                {/* Timeline Index */}
+                <div className="hidden md:flex shrink-0 w-10 items-start justify-center pt-1">
+                  <span className="font-bebas text-3xl text-editor-surface/40 leading-none select-none">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                </div>
+
+                {/* Content Block */}
+                <div className="flex-1 flex flex-col gap-3">
+                  
+                  {/* Top Metadata */}
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-bold text-editor-bg leading-tight">
+                        {item.role}
+                      </h3>
+                      <p className="text-sm font-semibold text-editor-surface flex items-center gap-1.5 mt-0.5">
+                        <Building2 className="w-3.5 h-3.5 text-editor-surface/70 shrink-0" />
+                        <span>{item.company}</span>
+                      </p>
+                    </div>
+
+                    <span className="text-xs font-mono text-editor-surface/70 tracking-wide whitespace-nowrap mt-1">
+                      {item.duration}
+                    </span>
+                  </div>
+
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {item.badges.map((badge) => (
+                      <span 
+                        key={badge} 
+                        className="text-[10px] sm:text-[11px] font-medium tracking-wide uppercase px-2.5 py-1 rounded-md bg-editor-surface/10 text-editor-surface/90"
+                      >
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Bullet Achievements */}
+                  <ul className="flex flex-col gap-2 pt-1 text-xs sm:text-sm text-editor-bg/80 leading-relaxed">
+                    {item.achievements.map((bullet, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <span className="text-editor-surface/50 mt-1 shrink-0">—</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                </div>
+
+              </div>
+            ))}
+          </div>
+
+          {/* Education & Certifications — open typographic layout */}
+          <div className="w-full flex flex-col gap-8">
+            <div className="border-b border-editor-surface/20 pb-4">
+              <h3 className="text-2xl sm:text-3xl md:text-4xl font-bebas tracking-wide text-editor-bg">
+                Education & Certifications
+              </h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 w-full">
+              
+              {/* Education Block */}
+              <div className="flex flex-col gap-6">
+                <span className="text-xs font-bold uppercase tracking-wider text-editor-surface flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4" />
+                  <span>Academic Credentials</span>
+                </span>
+
+                <div className="flex flex-col gap-6">
+                  {education.map((edu, idx) => (
+                    <div key={idx} className="flex flex-col gap-1.5 pb-6 border-b border-editor-surface/10 last:border-b-0 last:pb-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <h4 className="text-sm sm:text-base font-bold text-editor-bg leading-snug">
+                            {edu.institution}
+                          </h4>
+                          <p className="text-xs text-editor-surface font-medium">{edu.campus}</p>
+                        </div>
+                        {edu.honor && (
+                          <span className="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full bg-editor-surface text-editor-primary shrink-0">
+                            {edu.honor}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2 text-xs font-semibold text-editor-bg/85 mt-0.5">
+                        <span>{edu.degree}</span>
+                        <span className="text-editor-surface/40">·</span>
+                        <span className="text-editor-surface">{edu.year}</span>
+                      </div>
+
+                      <p className="text-[11px] sm:text-xs text-editor-bg/65 leading-relaxed">
+                        {edu.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Certifications Block */}
+              <div className="flex flex-col gap-6">
+                <span className="text-xs font-bold uppercase tracking-wider text-editor-surface flex items-center gap-2">
+                  <Award className="w-4 h-4" />
+                  <span>Professional Certifications</span>
+                </span>
+
+                <div className="flex flex-col gap-6">
+                  {certifications.map((cert, idx) => (
+                    <div key={idx} className="flex flex-col gap-1.5 pb-6 border-b border-editor-surface/10 last:border-b-0 last:pb-0">
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-editor-surface">
+                        <span>{cert.field}</span>
+                      </div>
+                      
+                      <h4 className="text-sm sm:text-base font-bold text-editor-bg leading-snug">
+                        {cert.title}
+                      </h4>
+
+                      <p className="text-[11px] sm:text-xs text-editor-bg/65 leading-relaxed">
+                        {cert.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 4A: WEBSITE PROJECTS (#projects) — Light Linen Palette */}
       {/* ================================================================ */}
       <section 
         id="projects" 
-        className="text-editor-primary w-full min-h-screen flex flex-col justify-center items-center py-16 sm:py-24 px-3 sm:px-6 max-w-7xl mx-auto border-b border-editor-border/40"
+        className="text-editor-primary w-full min-h-screen flex flex-col justify-center items-center py-16 sm:py-24 px-3 sm:px-6 max-w-7xl mx-auto border-b border-editor-border/40 scroll-mt-20 sm:scroll-mt-28"
       >
         <div className="flex flex-col items-center text-center gap-2 mb-6 sm:mb-8">
-          <span className="font-times-new italic text-editor-accent tracking-widest uppercase text-xs sm:text-sm">
-            Curated Deployments & Interactive Systems
-          </span>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-primary">
             Website Projects
           </h2>
           <p className="text-xs sm:text-sm text-editor-primary/75 max-w-lg">
-            Competition entries, municipality portals, and academic thesis platforms built with modern frontend ecosystems.
+            Production thesis systems, competition entries, and municipal web platforms engineered with React and modern APIs.
           </p>
         </div>
 
@@ -434,16 +837,13 @@ export default function Home() {
       </section>
 
       {/* ================================================================ */}
-      {/* SECTION 3B: VIDEO FILMS & EDITS — Light Linen Palette */}
+      {/* SECTION 4B: VIDEO FILMS & EDITS — Light Linen Palette */}
       {/* ================================================================ */}
       <section 
         id="video-projects" 
-        className="text-editor-primary w-full min-h-screen flex flex-col justify-center items-center py-16 sm:py-24 px-3 sm:px-6 max-w-7xl mx-auto border-b border-editor-border/40"
+        className="text-editor-primary w-full min-h-screen flex flex-col justify-center items-center py-16 sm:py-24 px-3 sm:px-6 max-w-7xl mx-auto border-b border-editor-border/40 scroll-mt-20 sm:scroll-mt-28"
       >
         <div className="flex flex-col items-center text-center gap-2 mb-6 sm:mb-8">
-          <span className="font-times-new italic text-editor-accent tracking-widest uppercase text-xs sm:text-sm">
-            Cinematography & Post-Production
-          </span>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-primary">
             Films & Video Edits
           </h2>
@@ -456,35 +856,30 @@ export default function Home() {
       </section>
 
       {/* ================================================================ */}
-      {/* SECTION 4: CONTACTS (#contacts) — Deep Roasted Espresso Palette */}
+      {/* SECTION 5: CONTACTS (#contacts) — Deep Roasted Espresso Palette */}
       {/* ================================================================ */}
       <section 
         id="contacts" 
-        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center"
+        className="relative py-16 sm:py-24 px-4 sm:px-8 w-full min-h-screen bg-editor-primary text-editor-bg font-poppins flex flex-col justify-center items-center scroll-mt-20 sm:scroll-mt-28"
       >
-        <div className="flex flex-col items-center gap-2 sm:gap-3 text-center z-10 mb-8 sm:mb-12">
-          <span className="font-times-new italic text-editor-surface tracking-widest uppercase text-xs sm:text-sm">
-            Let&apos;s Build or Film Together
-          </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-bg">
-            Contact Me
-          </h2>
-          <p className="text-xs sm:text-sm text-editor-bg/80 max-w-md px-2">
-            Have a project proposal, web inquiry, or video editing request? Send me a message and I&apos;ll get back to you promptly.
-          </p>
-        </div>
+        <div className="w-full max-w-5xl z-10 flex flex-col gap-10 sm:gap-16">
 
-        {/* 2-Column Split Container */}
-        <div className="w-full sm:w-[92%] lg:w-[88%] max-w-5xl z-10 flex flex-col lg:flex-row items-stretch justify-between gap-8 lg:gap-12 bg-editor-bg/5 border border-editor-surface/30 p-6 sm:p-10 lg:p-12 rounded-3xl shadow-2xl relative backdrop-blur-sm">
+          {/* Contact Header */}
+          <div className="border-b border-editor-surface/20 pb-6">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bebas tracking-wide text-editor-bg">
+              Contact Me
+            </h2>
+            <p className="text-xs sm:text-sm text-editor-bg/75 max-w-md mt-2">
+              Have a project proposal, web inquiry, or video editing request? Send me a message and I&apos;ll get back to you promptly.
+            </p>
+          </div>
+
+          {/* 2-Column open split — no glass box */}
+          <div className="flex flex-col lg:flex-row items-start justify-between gap-10 lg:gap-16">
           
           {/* Left Column: Direct Inquiries */}
-          <div className="lg:w-5/12 flex flex-col justify-between gap-6 sm:gap-8">
+          <div className="lg:w-5/12 flex flex-col gap-6 sm:gap-8">
             <div className="flex flex-col gap-3 sm:gap-4">
-              <div className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-editor-surface/20 border border-editor-surface/30 text-[10px] sm:text-xs font-semibold tracking-wider text-editor-surface w-fit">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Available for Freelance & Collaborations
-              </div>
-              
               <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-editor-bg">
                 Let&apos;s discuss your next project
               </h3>
@@ -495,36 +890,36 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-3">
-              {/* Direct Gmail Card with matching mailto and display */}
+              {/* Direct Gmail */}
               <a 
                 href="mailto:santosbuhawie28@gmail.com" 
-                className="flex items-center gap-3 sm:gap-4 p-3.5 rounded-2xl bg-editor-surface/10 border border-editor-surface/20 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group"
+                className="comic-pill group flex items-center gap-3 sm:gap-4 py-3.5 border-b border-editor-surface/15 hover:border-editor-surface/35"
               >
-                <div className="w-10 h-10 rounded-xl bg-editor-surface/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform text-editor-surface">
-                  <Mail className="w-5 h-5" />
+                <div className="comic-icon w-9 h-9 rounded-lg bg-editor-surface/15 flex items-center justify-center shrink-0 text-editor-surface">
+                  <Mail className="w-4 h-4" />
                 </div>
                 <div className="overflow-hidden min-w-0">
-                  <p className="text-[10px] uppercase tracking-wider text-editor-surface/80 font-semibold">Direct Email</p>
-                  <p className="text-xs sm:text-sm font-bold text-editor-bg group-hover:text-editor-surface transition-colors truncate">
+                  <p className="text-[10px] uppercase tracking-wider text-editor-surface/70 font-semibold">Direct Email</p>
+                  <p className="comic-text text-xs sm:text-sm font-bold text-editor-bg group-hover:text-editor-surface transition-colors truncate">
                     santosbuhawie28@gmail.com
                   </p>
                 </div>
               </a>
 
               {/* Social Channels */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="flex flex-col gap-0">
                 {contacts.map((contact) => (
                   <Link 
                     key={contact.id} 
                     href={contact.link} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center gap-3 p-3 rounded-2xl bg-editor-surface/10 border border-editor-surface/20 hover:bg-editor-surface/20 hover:border-editor-surface/40 transition-all duration-300 group"
+                    className="comic-pill group flex items-center gap-3 py-3.5 border-b border-editor-surface/15 hover:border-editor-surface/35"
                   >
-                    <Image src={contact.icon} alt={contact.platform} width={20} height={20} className="group-hover:scale-110 transition-transform shrink-0 w-4 h-4 sm:w-5 sm:h-5 object-contain" />
+                    <Image src={contact.icon} alt={contact.platform} width={20} height={20} className="comic-icon shrink-0 w-4 h-4 sm:w-5 sm:h-5 object-contain" />
                     <div className="overflow-hidden min-w-0">
-                      <p className="text-[9px] uppercase tracking-wider text-editor-surface/80 font-semibold">{contact.platform}</p>
-                      <p className="text-xs font-bold text-editor-bg truncate">{contact.text}</p>
+                      <p className="text-[9px] uppercase tracking-wider text-editor-surface/70 font-semibold">{contact.platform}</p>
+                      <p className="comic-text text-xs font-bold text-editor-bg truncate">{contact.text}</p>
                     </div>
                   </Link>
                 ))}
@@ -533,10 +928,10 @@ export default function Home() {
           </div>
 
           {/* Vertical Divider */}
-          <div className="hidden lg:block w-px bg-editor-surface/20 self-stretch" />
+          <div className="hidden lg:block w-px bg-editor-surface/15 self-stretch" />
 
           {/* Right Column: Contact Form */}
-          <div className="lg:w-6/12 flex flex-col justify-center">
+          <div className="lg:w-6/12 flex flex-col justify-center w-full">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="client-email" className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-editor-surface">
@@ -571,29 +966,30 @@ export default function Home() {
               <button 
                 type="submit" 
                 disabled={isSending}
-                className="w-full mt-2 bg-editor-surface text-editor-primary font-bold py-3.5 sm:py-4 rounded-xl cursor-pointer transition-all duration-300 hover:bg-editor-bg active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 text-xs sm:text-sm tracking-wide shadow-md"
+                className="comic-btn group w-full mt-2 bg-editor-surface text-editor-primary font-bold py-3.5 sm:py-4 rounded-xl cursor-pointer hover:bg-editor-bg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 text-xs sm:text-sm tracking-wide"
               >
                 {isSending ? (
                   <>
                     <span className="inline-block w-4 h-4 border-2 border-editor-primary border-t-transparent rounded-full animate-spin" />
-                    <span>Transmitting Message...</span>
+                    <span className="comic-text">Transmitting Message...</span>
                   </>
                 ) : (
                   <>
-                    <span>Send Message</span>
-                    <Send className="w-3.5 h-3.5" />
+                    <span className="comic-text">Send Message</span>
+                    <Send className="comic-icon w-3.5 h-3.5" />
                   </>
                 )}
               </button>
 
               {statusMessage && (
-                <div className="p-3.5 rounded-xl bg-editor-surface/20 border border-editor-surface/40 text-center animate-fade-in">
-                  <p className="text-xs text-editor-bg font-semibold">{statusMessage}</p>
+                <div className="pt-3 border-t border-editor-surface/20 text-center">
+                  <p className="text-xs text-editor-bg/80 font-semibold">{statusMessage}</p>
                 </div>
               )}
             </form>
           </div>
 
+          </div>
         </div>
       </section>
 
