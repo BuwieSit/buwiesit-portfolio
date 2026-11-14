@@ -922,7 +922,7 @@ export default function Home() {
         <div className="relative z-10 hidden lg:block w-full max-w-7xl mx-auto px-4 sm:px-8">
 
           {/* ── Top 4 columns: UI/UX → Frontend+CMS → APIs → Backend ── */}
-          <div className="relative flex flex-row items-start gap-0 w-full">
+          <div className="relative flex flex-row items-stretch gap-0 w-full">
 
             {/* Shared skill pill renderer as a function-like component */}
             {(() => {
@@ -960,14 +960,14 @@ export default function Home() {
                 </div>
               );
 
-              // Helper: category card
+              // Helper: category card with interactive layer hover highlight
               const CategoryCard = ({
-                title, icon, skills, accent = false,
-              }: { title: string; icon: React.ReactNode; skills: string[]; accent?: boolean }) => (
-                <div className={`flex flex-col gap-2 rounded-xl border-2 p-4 relative ${accent ? 'border-editor-accent/60 bg-editor-accent/10 shadow-[4px_4px_0px_#8B6F4E]' : 'border-editor-surface/30 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896]'}`}>
-                  <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/20">
-                    <span className="text-editor-surface">{icon}</span>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-editor-surface font-bebas text-sm">{title}</span>
+                title, icon, skills,
+              }: { title: string; icon: React.ReactNode; skills: string[] }) => (
+                <div className="flex flex-col gap-2 rounded-xl border-2 p-4 relative transition-all duration-300 ease-out border-editor-surface/30 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896] group-hover/layer:border-editor-accent/60 group-hover/layer:bg-editor-accent/10 group-hover/layer:shadow-[4px_4px_0px_#8B6F4E] group-hover/layer:-translate-y-1">
+                  <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/20 group-hover/layer:border-editor-accent/30 transition-colors duration-300">
+                    <span className="text-editor-surface group-hover/layer:text-editor-accent transition-colors duration-300">{icon}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-editor-surface group-hover/layer:text-editor-bg transition-colors duration-300 font-bebas text-sm">{title}</span>
                   </div>
                   {renderPills(skills)}
                 </div>
@@ -975,111 +975,136 @@ export default function Home() {
 
               return (
                 <>
-                  {/* ─── COLUMN 1: UI/UX & Multimedia (front layer) ─── */}
-                  <div className="flex-1 min-w-0 flex flex-col gap-3 relative">
-                    {/* Front layer badge */}
-                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-bg text-editor-primary border-2 border-editor-primary shadow-[2px_2px_0px_#2A1F14] font-bebas text-xs tracking-wider mb-1">
-                      ✦ FRONT LAYER
+                  {/* ─── COLUMN 1: Design Layer ─── */}
+                  <div className="group/layer flex-1 min-w-0 flex flex-col relative transition-all duration-300">
+                    <div className="flex flex-col gap-3">
+                      {/* Layer badge with hover animation */}
+                      <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full font-bebas text-xs tracking-wider mb-1 select-none whitespace-nowrap transition-all duration-300 ease-out bg-editor-surface/15 text-editor-surface border-2 border-editor-surface/30 group-hover/layer:bg-editor-bg group-hover/layer:text-editor-primary group-hover/layer:border-editor-primary group-hover/layer:shadow-[2px_2px_0px_#2A1F14] group-hover/layer:-translate-y-0.5">
+                        <span className="text-[10px] transition-transform duration-300 group-hover/layer:rotate-12 group-hover/layer:scale-110">✦</span>
+                        <span>Design Layer</span>
+                      </div>
+                      <CategoryCard
+                        title="UI/UX & Multimedia"
+                        icon={<Sparkles className="w-4 h-4" />}
+                        skills={["Figma", "Adobe XD", "Adobe Illustrator", "Lucidchart", "Miro", "Video Editing"]}
+                      />
                     </div>
-                    <CategoryCard
-                      title="UI/UX & Multimedia"
-                      icon={<Sparkles className="w-4 h-4" />}
-                      skills={["Figma", "Adobe XD", "Adobe Illustrator", "Lucidchart", "Miro", "Video Editing"]}
-                      accent
-                    />
-                    {/* Horizontal connector line from col 1 → col 2 */}
-                    <div className="absolute top-[45%] right-0 translate-x-full w-full flex items-center pointer-events-none z-20" style={{width: 'calc(100% + 0px)', left: '100%', top: '45%', position: 'absolute'}}>
+
+                    {/* Vertical connecting line from layer card to pipeline */}
+                    <div className="flex-1 flex flex-col items-center justify-end relative pointer-events-none min-h-[44px] pt-3" aria-hidden="true">
+                      <div className="w-px flex-1 border-l-2 border-dashed border-editor-surface/35 group-hover/layer:border-editor-accent transition-colors duration-300" />
+                      <div className="w-3 h-3 rounded-full bg-editor-primary border-2 border-editor-surface/60 group-hover/layer:border-editor-accent group-hover/layer:bg-editor-accent/20 flex items-center justify-center transition-all duration-300 -mb-1.5 z-30 shadow-[0_0_8px_rgba(201,184,150,0.2)]">
+                        <div className="w-1.5 h-1.5 rounded-full bg-editor-surface group-hover/layer:bg-editor-accent transition-colors duration-300 animate-pulse" />
+                      </div>
                     </div>
                   </div>
 
                   {/* SVG Connector: col1 → col2 */}
-                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10 relative">
+                  <div className="flex flex-col items-center justify-start pt-14 shrink-0 w-10 relative">
                     <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
                       <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
                       <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
                     </svg>
                   </div>
 
-                  {/* ─── COLUMN 2: Frontend + CMS ─── */}
-                  <div className="flex-1 min-w-0 flex flex-col gap-3">
-                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
-                      LAYER 02
+                  {/* ─── COLUMN 2: Frontend Layer ─── */}
+                  <div className="group/layer flex-1 min-w-0 flex flex-col relative transition-all duration-300">
+                    <div className="flex flex-col gap-3">
+                      <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full font-bebas text-xs tracking-wider mb-1 select-none whitespace-nowrap transition-all duration-300 ease-out bg-editor-surface/15 text-editor-surface border-2 border-editor-surface/30 group-hover/layer:bg-editor-bg group-hover/layer:text-editor-primary group-hover/layer:border-editor-primary group-hover/layer:shadow-[2px_2px_0px_#2A1F14] group-hover/layer:-translate-y-0.5">
+                        <span className="text-[10px] transition-transform duration-300 group-hover/layer:rotate-12 group-hover/layer:scale-110">✦</span>
+                        <span>Frontend Layer</span>
+                      </div>
+                      <CategoryCard
+                        title="Frontend Engineering"
+                        icon={<Code2 className="w-4 h-4" />}
+                        skills={["React", "Next.js", "Tailwind CSS", "Sass/SCSS", "JavaScript (ES6+)"]}
+                      />
+                      <CategoryCard
+                        title="CMS & Web Platforms"
+                        icon={<Globe className="w-4 h-4" />}
+                        skills={["WordPress", "Elementor", "Advanced Custom Fields (ACF)"]}
+                      />
                     </div>
-                    <CategoryCard
-                      title="Frontend Engineering"
-                      icon={<Code2 className="w-4 h-4" />}
-                      skills={["React", "Next.js", "Tailwind CSS", "Sass/SCSS", "JavaScript (ES6+)"]}
-                    />
-                    <CategoryCard
-                      title="CMS & Web Platforms"
-                      icon={<Globe className="w-4 h-4" />}
-                      skills={["WordPress", "Elementor", "Advanced Custom Fields (ACF)"]}
-                    />
+
+                    {/* Vertical connecting line from layer card to pipeline */}
+                    <div className="flex-1 flex flex-col items-center justify-end relative pointer-events-none min-h-[44px] pt-3" aria-hidden="true">
+                      <div className="w-px flex-1 border-l-2 border-dashed border-editor-surface/35 group-hover/layer:border-editor-accent transition-colors duration-300" />
+                      <div className="w-3 h-3 rounded-full bg-editor-primary border-2 border-editor-surface/60 group-hover/layer:border-editor-accent group-hover/layer:bg-editor-accent/20 flex items-center justify-center transition-all duration-300 -mb-1.5 z-30 shadow-[0_0_8px_rgba(201,184,150,0.2)]">
+                        <div className="w-1.5 h-1.5 rounded-full bg-editor-surface group-hover/layer:bg-editor-accent transition-colors duration-300 animate-pulse" />
+                      </div>
+                    </div>
                   </div>
 
                   {/* SVG Connector: col2 → col3 */}
-                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10">
+                  <div className="flex flex-col items-center justify-start pt-14 shrink-0 w-10">
                     <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
                       <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
                       <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
                     </svg>
                   </div>
 
-                  {/* ─── COLUMN 3: APIs ─── */}
-                  <div className="flex-1 min-w-0 flex flex-col gap-3">
-                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
-                      LAYER 03
+                  {/* ─── COLUMN 3: API Layer ─── */}
+                  <div className="group/layer flex-1 min-w-0 flex flex-col relative transition-all duration-300">
+                    <div className="flex flex-col gap-3">
+                      <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full font-bebas text-xs tracking-wider mb-1 select-none whitespace-nowrap transition-all duration-300 ease-out bg-editor-surface/15 text-editor-surface border-2 border-editor-surface/30 group-hover/layer:bg-editor-bg group-hover/layer:text-editor-primary group-hover/layer:border-editor-primary group-hover/layer:shadow-[2px_2px_0px_#2A1F14] group-hover/layer:-translate-y-0.5">
+                        <span className="text-[10px] transition-transform duration-300 group-hover/layer:rotate-12 group-hover/layer:scale-110">✦</span>
+                        <span>API Layer</span>
+                      </div>
+                      <CategoryCard
+                        title="APIs & Data Fetching"
+                        icon={<Layers className="w-4 h-4" />}
+                        skills={["RESTful APIs", "Axios", "TanStack Query", "Postman"]}
+                      />
                     </div>
-                    <CategoryCard
-                      title="APIs & Data Fetching"
-                      icon={<Layers className="w-4 h-4" />}
-                      skills={["RESTful APIs", "Axios", "TanStack Query", "Postman"]}
-                    />
+
+                    {/* Vertical connecting line from layer card to pipeline */}
+                    <div className="flex-1 flex flex-col items-center justify-end relative pointer-events-none min-h-[44px] pt-3" aria-hidden="true">
+                      <div className="w-px flex-1 border-l-2 border-dashed border-editor-surface/35 group-hover/layer:border-editor-accent transition-colors duration-300" />
+                      <div className="w-3 h-3 rounded-full bg-editor-primary border-2 border-editor-surface/60 group-hover/layer:border-editor-accent group-hover/layer:bg-editor-accent/20 flex items-center justify-center transition-all duration-300 -mb-1.5 z-30 shadow-[0_0_8px_rgba(201,184,150,0.2)]">
+                        <div className="w-1.5 h-1.5 rounded-full bg-editor-surface group-hover/layer:bg-editor-accent transition-colors duration-300 animate-pulse" />
+                      </div>
+                    </div>
                   </div>
 
                   {/* SVG Connector: col3 → col4 */}
-                  <div className="flex flex-col items-center justify-center pt-14 shrink-0 w-10">
+                  <div className="flex flex-col items-center justify-start pt-14 shrink-0 w-10">
                     <svg width="40" height="60" viewBox="0 0 40 60" className="overflow-visible" aria-hidden="true">
                       <line x1="0" y1="30" x2="40" y2="30" stroke="#C9B896" strokeWidth="1.5" strokeDasharray="4 3" opacity="0.5" />
                       <polygon points="38,26 40,30 38,34" fill="#C9B896" opacity="0.5" />
                     </svg>
                   </div>
 
-                  {/* ─── COLUMN 4: Backend & DB ─── */}
-                  <div className="flex-1 min-w-0 flex flex-col gap-3">
-                    <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full bg-editor-surface/15 text-editor-surface border border-editor-surface/30 font-bebas text-xs tracking-wider mb-1">
-                      LAYER 04
+                  {/* ─── COLUMN 4: Backend/Database Layer ─── */}
+                  <div className="group/layer flex-1 min-w-0 flex flex-col relative transition-all duration-300">
+                    <div className="flex flex-col gap-3">
+                      <div className="inline-flex self-start items-center gap-1.5 px-2.5 py-1 rounded-full font-bebas text-xs tracking-wider mb-1 select-none whitespace-nowrap transition-all duration-300 ease-out bg-editor-surface/15 text-editor-surface border-2 border-editor-surface/30 group-hover/layer:bg-editor-bg group-hover/layer:text-editor-primary group-hover/layer:border-editor-primary group-hover/layer:shadow-[2px_2px_0px_#2A1F14] group-hover/layer:-translate-y-0.5">
+                        <span className="text-[10px] transition-transform duration-300 group-hover/layer:rotate-12 group-hover/layer:scale-110">✦</span>
+                        <span>Backend/Database Layer</span>
+                      </div>
+                      <CategoryCard
+                        title="Backend & Database"
+                        icon={<Database className="w-4 h-4" />}
+                        skills={["Python", "Supabase", "PostgreSQL", "MySQL", "SQL"]}
+                      />
                     </div>
-                    <CategoryCard
-                      title="Backend & Database"
-                      icon={<Database className="w-4 h-4" />}
-                      skills={["Python", "Supabase", "PostgreSQL", "MySQL", "SQL"]}
-                    />
+
+                    {/* Vertical connecting line from layer card to pipeline */}
+                    <div className="flex-1 flex flex-col items-center justify-end relative pointer-events-none min-h-[44px] pt-3" aria-hidden="true">
+                      <div className="w-px flex-1 border-l-2 border-dashed border-editor-surface/35 group-hover/layer:border-editor-accent transition-colors duration-300" />
+                      <div className="w-3 h-3 rounded-full bg-editor-primary border-2 border-editor-surface/60 group-hover/layer:border-editor-accent group-hover/layer:bg-editor-accent/20 flex items-center justify-center transition-all duration-300 -mb-1.5 z-30 shadow-[0_0_8px_rgba(201,184,150,0.2)]">
+                        <div className="w-1.5 h-1.5 rounded-full bg-editor-surface group-hover/layer:bg-editor-accent transition-colors duration-300 animate-pulse" />
+                      </div>
+                    </div>
                   </div>
                 </>
               );
             })()}
           </div>
 
-          {/* ── Vertical drop lines from each column to pipeline bar ── */}
-          <div className="relative w-full flex flex-row mt-6 pointer-events-none" aria-hidden="true">
-            {/* 4 column drop connectors spread evenly */}
-            {[12.5, 37.5, 62.5, 87.5].map((pct, i) => (
-              <div
-                key={i}
-                className="absolute flex flex-col items-center"
-                style={{ left: `${pct}%`, top: 0 }}
-              >
-                <div className="w-px h-8 border-l-2 border-dashed border-editor-surface/30" />
-                <div className="w-2.5 h-2.5 rounded-full bg-editor-surface/50 border border-editor-surface animate-pulse" />
-              </div>
-            ))}
-          </div>
-
           {/* ── Version Control Pipeline Bar ── */}
-          <div className="relative z-20 mt-10 w-full border-2 border-editor-surface/35 rounded-xl bg-editor-surface/5 shadow-[4px_4px_0px_#8B6F4E]">
-            {/* Pipeline tape label top-left */}
-            <div className="absolute -top-3.5 left-6 bg-editor-primary px-3 py-0.5 border border-editor-surface/40 rounded font-bebas text-xs text-editor-surface tracking-widest z-10">
+          <div className="relative z-20 mt-0 w-full border-2 border-editor-surface/35 rounded-xl bg-editor-surface/5 shadow-[4px_4px_0px_#8B6F4E]">
+            {/* Pipeline tape label centered to cleanly clear all 4 drop lines */}
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-editor-primary px-3 py-0.5 border border-editor-surface/40 rounded font-bebas text-xs text-editor-surface tracking-widest z-40 whitespace-nowrap">
               ━ VERSION CONTROL &amp; METHODOLOGY PIPELINE ━
             </div>
 
@@ -1150,7 +1175,7 @@ export default function Home() {
         {/* ── MOBILE: Stacked vertical layout (shown on < lg) ── */}
         <div className="relative z-10 lg:hidden w-full max-w-7xl mx-auto px-4 sm:px-8 flex flex-col gap-6">
           {skillCategories.map((category) => (
-            <div key={category.title} className="flex flex-col gap-3 border-2 border-editor-surface/25 rounded-xl p-4 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896]">
+            <div key={category.title} className="flex flex-col gap-3 border-2 border-editor-surface/25 rounded-xl p-4 bg-editor-primary/80 shadow-[3px_3px_0px_#C9B896] hover:border-editor-accent/60 hover:bg-editor-accent/10 hover:shadow-[4px_4px_0px_#8B6F4E] transition-all duration-300">
               <div className="flex items-center gap-2 pb-2 border-b border-editor-surface/20">
                 <span className="text-editor-surface">{category.icon}</span>
                 <span className="font-bebas text-sm tracking-widest text-editor-surface uppercase">{category.title}</span>

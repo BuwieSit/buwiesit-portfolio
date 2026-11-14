@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Buhawie Santos — Editorial Portfolio
 
-## Getting Started
+Personal portfolio for **Buhawie "Buwie" Santos** — Frontend Web Developer, UI/UX Designer, and professional event cinematographer based in Rizal, Philippines.
 
-First, run the development server:
+The site is designed around a **Warm Editorial & Cinematic** aesthetic: warm linen and deep espresso sections, Bebas Neue display titles, and a visual language drawn from printed editorial magazines and analog cinema — not a generic SaaS template.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Live Site
+
+> https://buhawiesit.vercel.app/
+
+---
+
+## Tech Stack
+
+| Layer | Tools |
+| :--- | :--- |
+| Framework | Next.js 16 / React 19 |
+| Styling | Tailwind CSS v4 |
+| Language | TypeScript |
+| Email | Resend (contact form) |
+| Icons | Lucide React |
+| Fonts | Bebas Neue, Times New Roman MT, Poppins |
+| Deployment | Vercel |
+
+---
+
+## Page Sections
+
+The site is a single-page app with 7 sections that alternate between light linen (`#EFEAE2`) and deep espresso (`#2A1F14`):
+
+| Section ID | Background | Content |
+| :--- | :--- | :--- |
+| `#home` | Light Linen | Hero masthead, editorial dateline, social links, CTAs, auto-scrolling project reel |
+| `#about` | Deep Espresso | Bio, photo, interactive Disciplines panel (Frontend / Video / UI·UX tabs) |
+| `#tech-stack` | Deep Espresso | 4-column architecture pipeline with SVG connectors and icon popup tooltips |
+| `#experience` | Deep Espresso | Work experience timeline, Education & Certifications grid |
+| `#projects` | Light Linen | Website Projects carousel — 4 entries |
+| `#video-projects` | Light Linen | Films & Video Edits carousel — 6 YouTube entries |
+| `#contacts` | Deep Espresso | Contact form + direct email and social links |
+
+The floating header nav links **5 sections**: Home, About, Experience, Projects, Contacts. `#tech-stack` and `#video-projects` are reached by scrolling.
+
+---
+
+## Project Structure
+
+```
+app/
+  page.tsx          # All page sections and their data
+  actions.ts        # Server action — contact form email via Resend (honeypot, rate-limit, validation)
+  globals.css       # Design tokens, color system, comic-* interaction classes
+  layout.tsx        # Font setup, root layout, persistent footer
+
+components/
+  Header.tsx        # Fixed floating nav — section-tracking, logo inversion, mobile drawer
+  Carousel.tsx      # Keyboard-accessible 3-up carousel with dot indicators
+  WebsiteCard.tsx   # Web project card — full-bleed mockup, tags, role, live-site link
+  VideoCard.tsx     # YouTube facade — thumbnail + play button; loads iframe on click only
+  ProjectReelCard.tsx  # Read-only hero reel poster card (no pointer events)
+  TestimonialCarousel.tsx  # CSS marquee strip — tilted track, dual ticker ribbons
+
+api/
+  resend.ts         # Resend SDK wrapper — HTML email template using editor-* palette
+
+public/
+  websites/         # Project mockup screenshots
+  icons/            # Tech stack and social icons
+  skills/           # Skill grid icons
+  editor_logo/      # Logo variants (light/dark, with/without bg) and profile photo
+  fonts/            # Times New Roman MT .otf file
+  BUHAWIE_SANTOS_RESUME.pdf  # Resume — linked in header nav and mobile drawer
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+### Environment Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The contact form requires a [Resend](https://resend.com) API key. Create a `.env.local` file at the project root:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+RESEND_API_KEY=your_resend_api_key_here
+```
 
-## Deploy on Vercel
+Without this key the contact form returns an error. All other sections render without it.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Design Notes
+
+The full color system, typography rules, section rhythm, component inventory, interaction system, and contact form implementation details are documented in [`AGENTS.md`](./AGENTS.md).
+
+**Read `AGENTS.md` before modifying any layout, color, section ID, or nav item.** The floating header's dark/light switching and the section-tracking depend on specific IDs and the `darkSections` array in `components/Header.tsx` staying in sync.

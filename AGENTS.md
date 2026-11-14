@@ -57,20 +57,54 @@ Configured in [`app/layout.tsx`](file:///E:/BuhawiePortfolio/editor-portfolio/ap
 
 ## 4. Rhythm & Section Contrast Architecture
 
-The portfolio deliberately alternates between light linen and deep espresso sections:
+The portfolio alternates between light linen and deep espresso sections across **7 distinct sections**:
 
 ```
-[ Section 1: #home ]      -> Light Linen (#EFEAE2) with warm glow & Bebas title
-[ Section 2: #about ]     -> Deep Espresso (#2A1F14) with warm sand accents & inset glow
-[ Section 3: #projects ]  -> Light Linen (#EFEAE2) with Website & Video carousels
-[ Section 4: #contacts ]  -> Deep Espresso (#2A1F14) with split contact card & form
+[ Section 1: #home          ] -> Light Linen  (#EFEAE2) — Hero masthead, editorial dateline, TestimonialCarousel reel
+[ Section 2: #about         ] -> Deep Espresso (#2A1F14) — Bio, photo, interactive Disciplines panel (Frontend / Video / UI·UX tabs)
+[ Standalone: #tech-stack   ] -> Deep Espresso (#2A1F14) — 4-column architecture pipeline + mobile stacked skill cards
+[ Section 3: #experience    ] -> Deep Espresso (#2A1F14) — Work experience timeline, Education & Certifications grid
+[ Section 4: #projects      ] -> Light Linen  (#EFEAE2) — Website Projects carousel (4 entries)
+[ Section 5: #video-projects] -> Light Linen  (#EFEAE2) — Films & Video Edits carousel (6 entries)
+[ Section 6: #contacts      ] -> Deep Espresso (#2A1F14) — Contact form + social links
 ```
 
 ### The Inverting Navigation System:
 - Defined in [`components/Header.tsx`](file:///E:/BuhawiePortfolio/editor-portfolio/components/Header.tsx).
-- Automatically tracks the viewport position across sections (`home`, `about`, `projects`, `contacts`).
+- Tracks **5 nav items**: `home`, `about`, `experience`, `projects`, `contacts`.
+- Dark sections (trigger dark nav pill + light logo): `about`, `experience`, `contacts`.
+- `#tech-stack` and `#video-projects` are scrolled into — they have no direct nav entry.
 - Seamlessly swaps the logo (`light_nobg.png` vs `dark_nobg.png`) and the floating nav pill between dark/light styling.
-- ⚠️ **Preserve all section IDs** (`#home`, `#about`, `#projects`, `#contacts`). Renaming or removing these IDs breaks header color transitions.
+- Mobile: hamburger button opens a right-side drawer with body scroll lock. Resume PDF download pinned at drawer bottom.
+- ⚠️ **Preserve all section IDs** (`#home`, `#about`, `#tech-stack`, `#experience`, `#projects`, `#video-projects`, `#contacts`). Renaming or removing these IDs breaks header color transitions and in-page anchor links.
+- ⚠️ **Footer** (in `app/layout.tsx`) links all 5 nav sections and must stay in sync if nav items change.
+
+---
+
+## 4b. Component Inventory
+
+| Component | File | Purpose |
+| :--- | :--- | :--- |
+| `Header` | `components/Header.tsx` | Fixed floating nav — desktop pill + mobile drawer. Section-tracking, logo inversion, Resume PDF download. |
+| `Carousel` | `components/Carousel.tsx` | Keyboard-accessible 3-up slide carousel (center + faded flanks). Dot indicators. Used for website and video project sections. |
+| `WebsiteCard` | `components/WebsiteCard.tsx` | Full-bleed mockup card with gradient overlay, tech tags, tagline, role, description. Entire card is a live-site link. |
+| `VideoCard` | `components/VideoCard.tsx` | YouTube facade — renders HQ thumbnail with play button; mounts iframe with `autoplay=1` only on click. Keyboard accessible. |
+| `ProjectReelCard` | `components/ProjectReelCard.tsx` | Read-only poster card (no pointer events). Category badge + "CUT // 2026" slate tag + Bebas title over gradient image. Used in hero reel only. |
+| `TestimonialCarousel` | `components/TestimonialCarousel.tsx` | CSS marquee strip. Tilted `-rotate-2` track, top/bottom Bebas ticker ribbons scrolling in opposite directions, `ProjectReelCard` items duplicated for seamless loop. Speed: `slow \| normal \| fast`. |
+
+### `comic-*` Interaction System (`app/globals.css`)
+
+A site-wide set of CSS utility classes powering all micro-interactions:
+
+| Class | Behavior |
+| :--- | :--- |
+| `.comic-btn` | Spring-physics hover lift (`scale(1.04) translateY(-2px)`), tactile press (`scale(0.95)`). |
+| `.comic-pill` | Hover rotates + lifts (`scale(1.06) rotate(-1.5deg) translateY(-1px)`). |
+| `.comic-icon` | On parent hover: `comicIconKick` keyframe (scale + rotate wobble). |
+| `.comic-text` | On parent hover: subtle `scale(1.03)`. |
+| `.animate-comic-icon` | Nav icon pop-in: `comicIconPop` keyframe (scale + rotate spring). |
+| `.animate-comic-word` | Nav label expand: `comicWordPop` keyframe (max-width expand + rotate). |
+| `.comic-distort-bubble` | Skill pill hover: distorted bubble pops up above pill showing the skill's icon image. Has `prefers-reduced-motion` fallback (no animation, still visible). |
 
 ---
 
@@ -104,7 +138,18 @@ You **can** make tasteful, high-value improvements that respect the original des
 
 ---
 
-## 7. Pre-Flight Checklist Before Writing Code
+## 7. Contact Form Implementation Notes
+
+- **Honeypot field:** Hidden `website` input. Any non-empty value silently returns `success: true` — bots never learn what stopped them.
+- **Rate limiting:** 3 submissions per IP per 15 minutes. Stored in a process-local `Map` (resets on cold start / serverless spin-down).
+- **Input validation:** Email RFC regex + 254-char max; subject 180-char max; CRLF injection blocked.
+- **HTML escaping:** `escapeHtml()` in `api/resend.ts` sanitizes all user input before HTML interpolation.
+- **Email template:** Fully on-brand — uses the `editor-*` hex palette (`#EFEAE2`, `#2A1F14`, `#8B6F4E`, `#C9B896`, `#CEC9C5`) in inline styles so it renders correctly in all email clients.
+- **Reply-To:** Set to the sender's email so Buwie can reply directly from inbox.
+
+---
+
+## 8. Pre-Flight Checklist Before Writing Code
 
 Before writing or editing code for any redesign task:
 
